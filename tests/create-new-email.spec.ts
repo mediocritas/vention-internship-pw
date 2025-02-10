@@ -13,6 +13,8 @@ const fileName: string = getEnvVar('FILE_NAME');
 const filePath = path.resolve(fileName);
 
 
+test.describe('mailfence tests (eng loc)', async () => {
+
 test.beforeEach('login', async ({ page }) => {
   await page.goto('https://mailfence.com/en/');
   await page.locator('//button[@id="signin"]').click();
