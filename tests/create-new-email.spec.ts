@@ -59,7 +59,7 @@ test.describe('mailfence tests', () => {
     await page.locator('//*[text()="My documents"]')
       .waitFor({ state: 'attached' });
     await page.locator('//*[text()="My documents"]').click();
-    await page.waitForTimeout(2000);
+    await page.locator('#dialBtn_OK').waitFor({ state: 'attached' });
     await page.locator('#dialBtn_OK').click();
 
     await page.locator('//*[@id="nav-docs"]').click();
