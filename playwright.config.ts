@@ -1,18 +1,30 @@
 import { defineConfig, devices } from '@playwright/test';
+import dotenv from 'dotenv';
+import path from 'path';
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+dotenv.config();
+
+export const testSettings = {
+  maxRetries: 20,
+  baseURL: 'https://mailfence.com/en/',
+  timeout: 30000,
+  envVars: {
+    login: process.env.LOGIN || 'defaultLogin',
+    password: process.env.PASSWORD || 'defaultPassword',
+    emailSubject: process.env.SUBJECT || 'Test Email',
+    fileName: process.env.FILE_NAME || 'Test fileName',
+    textForTest: process.env.TEXTBOX_TEXT || 'randomTextForTest',
+  },
+  filePath: path.resolve(process.env.FILE_NAME || 'Test fileName')
+};
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './src/tests',
+
+
+  testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -30,6 +42,7 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    ...testSettings,
   },
 
   /* Configure projects for major browsers */
