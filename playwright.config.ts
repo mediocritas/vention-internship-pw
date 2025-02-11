@@ -1,21 +1,19 @@
 import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
-import path from 'path';
 
 dotenv.config();
 
-export const testSettings = {
-  maxRetries: 20,
-  baseURL: 'https://mailfence.com/en/',
-  timeout: 30000,
+const testSettings = {
   envVars: {
     login: process.env.LOGIN || 'defaultLogin',
     password: process.env.PASSWORD || 'defaultPassword',
     emailSubject: process.env.SUBJECT || 'Test Email',
     fileName: process.env.FILE_NAME || 'Test fileName',
     textForTest: process.env.TEXTBOX_TEXT || 'randomTextForTest',
+    maxRetries: process.env.MAX_RETRIES || 20,
+    baseURL: process.env.BASE_URL || 'https://mailfence.com/en/',
+    domain: process.env.DOMAIN || '@mailfence.com',
   },
-  filePath: path.resolve(process.env.FILE_NAME || 'Test fileName')
 };
 
 export default defineConfig({
