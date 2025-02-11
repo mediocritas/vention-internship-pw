@@ -5,15 +5,13 @@ import { customDragTo } from './helpers';
 
 test.describe('mailfence tests (eng loc)', async () => {
 
-test.beforeEach('login', async ({ page }) => {
-  await page.goto('https://mailfence.com/en/');
-  await page.locator('//button[@id="signin"]').click();
-  await page.locator('//input[@id="UserID"]').fill(login);
-  await page.locator('//input[@id="Password"]').fill(password);
-  await page.locator('//input[@value="Enter"]').click();
-});
-
-test.describe('mailfence tests', () => {
+  test.beforeEach('login', async ({ page }) => {
+    await page.goto(testSettings.baseURL);
+    await page.locator('//button[@id="signin"]').click();
+    await page.locator('//input[@id="UserID"]').fill(testSettings.envVars.login);
+    await page.locator('//input[@id="Password"]').fill(testSettings.envVars.password);
+    await page.locator('//input[@value="Enter"]').click();
+  });
 
   test('create new email', async ({ page }) => {
     await page.locator('//*[@id="nav-mail"]').click();
