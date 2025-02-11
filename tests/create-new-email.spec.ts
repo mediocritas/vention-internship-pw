@@ -49,27 +49,24 @@ test.describe('mailfence tests (eng loc)', async () => {
     ).click();
 
     await page.locator('//*[text()="Save in Documents"]').click();
-    await page.waitForLoadState('load');
     await page.locator('//*[text()="My documents"]')
       .waitFor({ state: 'attached' });
     await page.locator('//*[text()="My documents"]').click();
-    await page.waitForLoadState('load');
     await page.locator('#dialBtn_OK').waitFor({ state: 'visible' });
 
     for (let i = 0; i < parseInt(process.env.MAX_RETRIES!, 10); i++) {
       await page.waitForLoadState('load');
       await page.locator('#dialBtn_OK').click({ force: true });
       if (await page.locator('//*[text()="My documents"]')
-        .isHidden({ timeout: 500 })) {
+        .isHidden({ timeout: 300 })) {
         break;
       }
     }
 
     await page.locator('#nav-docs').click();
 
-    const fileToDrag = page.locator(`//*[text()="${process.env.FILE_NAME}"]`);
+    const fileToDrag = page.locator(`//*[text()="${process.env.FILE_NAME}"]/../..`);
     const trashDirectory = page.locator('#doc_tree_trash');
-    await page.waitForLoadState('load');
 
     await fileToDrag.waitFor({ state: 'visible' });
     await trashDirectory.waitFor({ state: 'visible' });
@@ -77,7 +74,10 @@ test.describe('mailfence tests (eng loc)', async () => {
     await customDragTo(fileToDrag, trashDirectory, page);
 
     await page.locator('#doc_tree_trash').click();
-    await expect(fileToDrag).toBeVisible();
+    await page.locator('[title="Refresh"]').click(); 
+    await expect(
+      fileToDrag
+    ).toBeVisible();
   });
 
 });
