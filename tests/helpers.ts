@@ -7,18 +7,16 @@ export const customDragTo = async (source: Locator, target: Locator, page: Page)
     if (sourceElementBox && targetElementBox) {
         await source.hover();
         await page.mouse.down();
-        const steps = 10;
-        for (let i = 0; i <= steps; i++) {
-            await page.mouse.move(
-                sourceElementBox.x + (targetElementBox.x - sourceElementBox.x) * (i / steps),
-                sourceElementBox.y + (targetElementBox.y - sourceElementBox.y) * (i / steps)
-            );
-            await target.waitFor({ state: 'visible' });
+        await page.mouse.move(
+            sourceElementBox.x + sourceElementBox.width / 2, 
+            sourceElementBox.y + sourceElementBox.height / 2
+        );
+        await page.mouse.move(
+            targetElementBox.x + targetElementBox.width / 2, 
+            targetElementBox.y + targetElementBox.height / 2
+        );
 
-        }
         await target.waitFor({ state: 'visible' });
         await page.mouse.up();
     }
-
-
 }
