@@ -1,16 +1,6 @@
 import { test, expect } from '@playwright/test';
-import dotenv from 'dotenv'
-import { getEnvVar } from './helpers';
-import path from 'path';
-
-dotenv.config();
-const login: string = getEnvVar('LOGIN');
-const password: string = getEnvVar('PASSWORD');
-const textForTest: string = getEnvVar('TEXTBOX_TEXT');
-const emailSubject: string = getEnvVar('SUBJECT');
-const fileName: string = getEnvVar('FILE_NAME');
-
-const filePath = path.resolve(fileName);
+import { testSettings } from '../playwright.config';
+import { customDragTo } from './helpers';
 
 
 test.describe('mailfence tests (eng loc)', async () => {
