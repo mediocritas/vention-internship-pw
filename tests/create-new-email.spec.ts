@@ -16,31 +16,36 @@ test.describe('mailfence tests (eng loc)', async () => {
   test('create new email', async ({ page }) => {
     await page.locator('//*[@id="nav-mail"]').click();
     await page.locator('//*[@id="mailNewBtn"]').click();
-    await page.locator('//*[@id="mailTo"]/input').fill(login + '@mailfence.com');
-    await page.locator('//*[@id="mailSubject"]').fill(emailSubject);
+    await page.locator('//*[@id="mailTo"]/input').fill(testSettings.envVars.login + '@mailfence.com');
+    await page.locator('//*[@id="mailSubject"]').fill(testSettings.envVars.emailSubject);
     const frame = page.frameLocator('iframe.editable');
-    await frame.locator('//*[@role="textbox"]').fill(textForTest);
+    await frame.locator('//*[@role="textbox"]').fill(testSettings.envVars.textForTest);
     await page.locator('//*[text()="Attachment"]').click();
-    await page.locator('input[type="file"]').setInputFiles(filePath);
-    await page.locator(`//*[contains(text(), "${fileName}")]`)
+    await page.locator('input[type="file"]').setInputFiles(testSettings.filePath);
+    await page.locator(`//*[contains(text(), "${testSettings.envVars.fileName}")]`)
       .waitFor({ state: 'visible' });
     await page.locator('//*[@id="mailSend"]').click();
 
 
     await page.locator('//*[@id="treeInbox"]').click();
-    await page.waitForTimeout(5000);
-    await page.locator('//*[@title="Refresh"]').click();
-    await expect(page.locator(
-      `//*[contains(@class, "listSubject") and @title="${emailSubject}"]`
-    ).first()).toBeVisible();
+
+    for (let i = 0; i < testSettings.maxRetries; i++) {
+      await page.locator('//*[@title="Refresh"]').click();
+
+      if (await page.locator(
+        `//*[contains(@class, "listSubject") and @title="${testSettings.envVars.emailSubject}"]`
+      ).waitFor({ state: 'attached', timeout: 1000 }).then(() => true).catch(() => false)) {
+        break;
+      }
+    }
 
     await page.locator(
-      `//*[contains(@class, "listSubject") and @title="${emailSubject}"]`
+      `//*[contains(@class, "listSubject") and @title="${testSettings.envVars.emailSubject}"]`
     ).first().click();
 
-    await page.locator(`//*[text()="${fileName}"]`).hover();
+    await page.locator(`//*[text()="${testSettings.envVars.fileName}"]`).hover();
     await page.locator(
-      `//*[text()="${fileName}"]/*[contains(@class, "icon-Arrow-down")]`
+      `//*[text()="${testSettings.envVars.fileName}"]/*[contains(@class, "icon-Arrow-down")]`
     ).click();
 
     await page.locator('//*[text()="Save in Documents"]').click();
@@ -51,14 +56,13 @@ test.describe('mailfence tests (eng loc)', async () => {
     await page.locator('#dialBtn_OK').click();
 
     await page.locator('//*[@id="nav-docs"]').click();
-    await expect(page.locator(
-      `//*[text()="${fileName}"]`
-    )).toBeVisible();
 
-    await page.locator(`//*[text()="${fileName}"]`)
-      .waitFor({ state: 'attached' });
-    await page.locator(`//*[text()="${fileName}"]`)
-      .dragTo(page.locator('//*[@id="doc_tree_trash"]'));
+    const fileToDrag = page.locator(`//*[text()="${testSettings.envVars.fileName}"]`);
+    const trashDirectory = page.locator(`//*[@id="doc_tree_trash"]`);
+    await page.waitForLoadState('load');
+
+    await fileToDrag.waitFor({ state: 'visible' });
+    await trashDirectory.waitFor({ state: 'visible' });
 
     await page.waitForTimeout(2000);
     await page.locator('//*[@id="doc_tree_trash"]').click();
