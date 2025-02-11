@@ -26,7 +26,6 @@ test.describe('mailfence tests (eng loc)', async () => {
       .waitFor({ state: 'visible' });
     await page.locator('//*[@id="mailSend"]').click();
 
-
     await page.locator('//*[@id="treeInbox"]').click();
 
     for (let i = 0; i < testSettings.maxRetries; i++) {
@@ -52,8 +51,17 @@ test.describe('mailfence tests (eng loc)', async () => {
     await page.locator('//*[text()="My documents"]')
       .waitFor({ state: 'attached' });
     await page.locator('//*[text()="My documents"]').click();
-    await page.locator('#dialBtn_OK').waitFor({ state: 'attached' });
-    await page.locator('#dialBtn_OK').click();
+    await page.waitForLoadState('load');
+    await page.locator('#dialBtn_OK').waitFor({ state: 'visible' });
+
+    for (let i = 0; i < testSettings.maxRetries; i++) {
+      await page.waitForLoadState('load');
+      await page.locator('#dialBtn_OK').click({ force: true });
+      if (await page.locator('//*[text()="My documents"]')
+        .isHidden({ timeout: 500 })) {
+        break;
+      }
+    }
 
     await page.locator('//*[@id="nav-docs"]').click();
 
@@ -64,7 +72,8 @@ test.describe('mailfence tests (eng loc)', async () => {
     await fileToDrag.waitFor({ state: 'visible' });
     await trashDirectory.waitFor({ state: 'visible' });
 
-    await page.waitForTimeout(2000);
+    await customDragTo(fileToDrag, trashDirectory, page);
+
     await page.locator('//*[@id="doc_tree_trash"]').click();
     await expect(page.locator(
       `//*[text()="${fileName}"]`
