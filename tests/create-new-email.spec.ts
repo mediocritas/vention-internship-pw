@@ -28,13 +28,14 @@ test.describe('mailfence tests (eng loc)', async () => {
     await page.locator('#mailSend').click();
 
     await page.locator('#treeInbox').click();
+    await page.locator('[title="Refresh"]').click();
 
     for (let i = 0; i < parseInt(process.env.MAX_RETRIES!, 10); i++) {
-      await page.locator('[title="Refresh"]').click();
 
+      await page.locator('[title="Refresh"]').click();
       if (await page.locator(
         `.listSubject[title="${process.env.SUBJECT}"]`
-      ).waitFor({ state: 'attached', timeout: 1000 }).then(() => true).catch(() => false)) {
+      ).waitFor({ state: 'visible', timeout: 1000 }).then(() => true).catch(() => false)) {
         break;
       }
     }
@@ -74,10 +75,8 @@ test.describe('mailfence tests (eng loc)', async () => {
     await customDragTo(fileToDrag, trashDirectory, page);
 
     await page.locator('#doc_tree_trash').click();
-    await page.locator('[title="Refresh"]').click(); 
-    await expect(
-      fileToDrag
-    ).toBeVisible();
+    await page.locator('[title="Refresh"]').click();
+    await expect(fileToDrag).toBeVisible();
   });
 
 });
