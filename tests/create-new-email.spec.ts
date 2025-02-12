@@ -31,11 +31,10 @@ test.describe('mailfence tests (eng loc)', async () => {
     await page.locator('[title="Refresh"]').click();
 
     for (let i = 0; i < parseInt(process.env.MAX_RETRIES!, 10); i++) {
-
       await page.locator('[title="Refresh"]').click();
       if (await page.locator(
         `.listSubject[title="${process.env.SUBJECT}"]`
-      ).waitFor({ state: 'visible', timeout: 1000 }).then(() => true).catch(() => false)) {
+      ).first().waitFor({ state: 'visible', timeout: 1000 }).then(() => true).catch(() => false)) {
         break;
       }
     }
