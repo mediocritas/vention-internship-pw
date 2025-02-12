@@ -75,11 +75,14 @@ test.describe('mailfence tests (eng loc)', async () => {
 
     await page.locator('#doc_tree_trash').click();
     await page.locator('[title="Refresh"]').click();
+    await page.waitForLoadState('load');
+    await page.screenshot({ path: 'test-results/screenshots/trashScreenshot.png' })
     await expect(fileToDrag).toBeVisible();
   });
 
 });
 
-test.afterEach(async ({ page }) => {
+test.afterEach(async ({ page, context }) => {
+  await context.tracing.stop({ path: 'test-results/traces/trace.zip' });
   await page.close();
 });
