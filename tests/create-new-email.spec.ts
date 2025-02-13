@@ -30,13 +30,14 @@ test.describe('mailfence tests (eng loc)', async () => {
     await page.locator('#mailSend').click();
 
     await page.locator('#treeInbox').click();
-    await page.locator('[title="Refresh"]').click();
 
     for (let i = 0; i < parseInt(process.env.MAX_RETRIES!, 10); i++) {
-      await page.locator('[title="Refresh"]').click();
+      await page.locator(
+        `.listSubject[title="${emailSubject}"]`
+      ).waitFor({ state: 'visible', timeout: 1000 }).then(() => true).catch(() => false)
       if (await page.locator(
-        `.listSubject[title="${process.env.SUBJECT}"]`
-      ).first().waitFor({ state: 'visible', timeout: 1000 }).then(() => true).catch(() => false)) {
+        `.listSubject[title="${emailSubject}"]`
+      ).isVisible()) {
         break;
       }
     }
