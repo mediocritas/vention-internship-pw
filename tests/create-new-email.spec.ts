@@ -12,6 +12,7 @@ let tempFilePath: string;
 test.describe('mailfence tests (eng loc)', async () => {
 
   test.beforeEach('login', async ({ page }) => {
+    tempFilePath = await createFilePath(seedFilePath);
     await page.goto(process.env.BASE_URL!);
     await page.locator('#signin').click();
     await page.locator('#UserID').fill(process.env.LOGIN!);
@@ -44,6 +45,7 @@ test.describe('mailfence tests (eng loc)', async () => {
       ).isVisible()) {
         break;
       }
+      await page.locator('[title="Refresh"]').click();
     }
 
     await page.locator(
