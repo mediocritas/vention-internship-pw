@@ -1,6 +1,10 @@
 import { test, expect } from '@playwright/test';
-import { customDragTo } from './helpers';
 import path from 'path';
+import { faker } from '@faker-js/faker';
+import { createFileCopy, createFilePath, deleteFile } from './temp-files-helper';
+import { customDragTo } from './custom-drag-n-drop';
+
+const emailSubject = process.env.SUBJECT! + faker.string.alpha(5);
 
 const seedFilePath = path.resolve(process.env.FILE_NAME!);
 let tempFilePath: string;
