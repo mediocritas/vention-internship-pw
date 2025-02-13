@@ -2,7 +2,8 @@ import { test, expect } from '@playwright/test';
 import { customDragTo } from './helpers';
 import path from 'path';
 
-const filePath = path.resolve(process.env.FILE_NAME!);
+const seedFilePath = path.resolve(process.env.FILE_NAME!);
+let tempFilePath: string;
 
 test.describe('mailfence tests (eng loc)', async () => {
 
@@ -18,12 +19,13 @@ test.describe('mailfence tests (eng loc)', async () => {
     await page.locator('#nav-mail').click();
     await page.locator('#mailNewBtn').click();
     await page.locator('#mailTo input').fill(process.env.LOGIN + process.env.DOMAIN!);
-    await page.locator('#mailSubject').fill(process.env.SUBJECT!);
+    await page.locator('#mailSubject').fill(emailSubject);
     const frame = page.frameLocator('iframe.editable');
     await frame.locator('[role="textbox"]').fill(process.env.TEXTBOX_TEXT!);
     await page.locator('//*[text()="Attachment"]').click();
-    await page.locator('input[type="file"]').setInputFiles(filePath!);
-    await page.locator(`//*[contains(text(), "${process.env.FILE_NAME}")]`)
+    const testFile = await createFileCopy(seedFilePath, tempFilePath);
+    await page.locator('input[type="file"]').setInputFiles(tempFilePath!);
+    await page.locator(`//*[contains(text(), "${testFile}")]`)
       .waitFor({ state: 'visible' });
     await page.locator('#mailSend').click();
 
@@ -40,12 +42,12 @@ test.describe('mailfence tests (eng loc)', async () => {
     }
 
     await page.locator(
-      `.listSubject[title="${process.env.SUBJECT}"]`
-    ).first().click();
+      `.listSubject[title="${emailSubject}"]`
+    ).click();
 
-    await page.locator(`//*[text()="${process.env.FILE_NAME}"]`).hover();
+    await page.locator(`//*[text()="${testFile}"]`).hover();
     await page.locator(
-      `//*[text()="${process.env.FILE_NAME}"]/*[contains(@class, "icon-Arrow-down")]`
+      `//*[text()="${testFile}"]/*[contains(@class, "icon-Arrow-down")]`
     ).click();
 
     await page.locator('//*[text()="Save in Documents"]').click();
@@ -65,7 +67,8 @@ test.describe('mailfence tests (eng loc)', async () => {
 
     await page.locator('#nav-docs').click();
 
-    const fileToDrag = page.locator(`//*[text()="${process.env.FILE_NAME}"]/../..`);
+    const fileToDrag = page.locator(`//*[text()="${testFile}"]/../..`);
+    await fileToDrag.scrollIntoViewIfNeeded();
     const trashDirectory = page.locator('#doc_tree_trash');
 
     await fileToDrag.waitFor({ state: 'visible' });
@@ -76,13 +79,17 @@ test.describe('mailfence tests (eng loc)', async () => {
     await page.locator('#doc_tree_trash').click();
     await page.locator('[title="Refresh"]').click();
     await page.waitForLoadState('load');
-    await page.screenshot({ path: 'test-results/screenshots/trashScreenshot.png' })
+    await page.screenshot({ path: 'test-results/screenshots/trashScreenshot.png' });
+    await fileToDrag.scrollIntoViewIfNeeded();
     await expect(fileToDrag).toBeVisible();
   });
 
 });
 
 test.afterEach(async ({ page, context }) => {
-  await context.tracing.stop({ path: 'test-results/traces/trace.zip' });
+  try {
+    await context.tracing.stop({ path: 'test-results/traces/trace.zip' });
+  } catch { }
   await page.close();
+  await deleteFile(tempFilePath);
 });
