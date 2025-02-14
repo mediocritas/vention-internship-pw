@@ -93,5 +93,7 @@ test.afterEach(async ({ page, context }) => {
     await context.tracing.stop({ path: 'test-results/traces/trace.zip' });
   } catch { }
   await page.close();
-  await deleteFile(tempFilePath);
+  if (test.info().errors.length === 0) {
+    await deleteFile(tempFilePath);
+  }
 });
