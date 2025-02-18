@@ -1,31 +1,34 @@
-import { type Locator, type Page } from '@playwright/test';
+import { Page } from '@playwright/test';
 import BasePage from './base-page';
+import ButtonElement from '../elements/button-element';
+import InputElement from '../elements/input-element';
 
-export default class MainPage extends BasePage{
+export default class MainPage extends BasePage {
     readonly url: string;
-    readonly loginButton: Locator;
-    readonly usernameInput: Locator;
-    readonly passwordInput: Locator;
-    readonly enterButton: Locator;
+    readonly loginButton = () =>
+        new ButtonElement(this.page.locator('//button[@id="signin"]'), 'signin');
+    readonly usernameInput = () =>
+        new InputElement(this.page.locator('//input[@id="UserID"]'), 'username')
+    readonly passwordInput = () =>
+        new InputElement(this.page.locator('//input[@id="Password"]'), 'password')
+    readonly enterButton = () =>
+        new InputElement(this.page.locator('//input[@value="Enter"]'), 'to_login')
+
     constructor(page: Page, url: string) {
         super(page);
-        this.url = url;
-        this.loginButton = page.locator('//button[@id="signin"]');
-        this.usernameInput = page.locator('//input[@id="UserID"]');
-        this.passwordInput = page.locator('//input[@id="Password"]');
-        this.enterButton = page.locator('//input[@value="Enter"]');
+        this.url = process.env.BASE_URL!;
     }
 
     async navigate() {
         await super.goto(this.url);
     }
 
-    async getLogin(login : string, password : string) {
-        await this.page.locator('#signin').click();
-        await this.page.locator('#UserID').fill(login);
-        await this.page.locator('#Password').fill(password);
-        await this.page.locator('input[value="Enter"]').click();
+    async getLogin(login: string, password: string) {
+        await this.loginButton().click();
+        await this.usernameInput().fill(login);
+        await this.passwordInput().fill(password);
+        await this.enterButton().click();
     }
 
-    
+
 }

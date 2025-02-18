@@ -1,39 +1,32 @@
-import { Locator, Page } from "@playwright/test";
+import { Page } from "@playwright/test";
 import BasePage from "./base-page";
 import DocTreeMenuComponent from "../components/doc-tree-menu-component";
 import HeaderMenuComponent from "../components/header-menu-component";
-import { customDragTo } from "../../../tests/custom-drag-n-drop";
+import { customDragTo } from "../../../tests/utils/custom-drag-n-drop";
 import DocFuncPanelComponent from "../components/doc-func-panel-component";
+import DocumentsListComponent from "../components/documents-list-component";
 
 export default class DocumentsPage extends BasePage {
 
-    readonly funcPanel: DocFuncPanelComponent;
-    readonly treeMenu: DocTreeMenuComponent;
-    readonly header: HeaderMenuComponent;
+    readonly funcPanel = () => new DocFuncPanelComponent(this.page);
+    readonly treeMenu = () => new DocTreeMenuComponent(this.page);
+    readonly header = () => new HeaderMenuComponent(this.page);
+    readonly documentsList = () => new DocumentsListComponent(this.page);
 
     constructor(page: Page) {
         super(page);
-        this.funcPanel = new DocFuncPanelComponent(page);
-        this.header = new HeaderMenuComponent(page);
-        this.treeMenu = new DocTreeMenuComponent(page);
-    }
-
-    getDocumentByName(docName: string): Locator {
-        return this.page.locator(`//*[text()="${docName}"]/../..`);
     }
 
     async dragDocumentInTrashDirectory(docName: string) {
-        const doc = this.getDocumentByName(docName);
-        await doc.scrollIntoViewIfNeeded();
-        await customDragTo(doc, this.treeMenu.trashDirButton, this.page);
+        const doc = this.documentsList().documentButton(docName);
+        await doc.scrollIntoView();
+        await customDragTo(doc, this.treeMenu().trashDirButton(), this.page);
     }
 
     async waitForDocumentInTrashDirectory(docName: string) {
-        await this.funcPanel.refreshButton.click();
+        await this.funcPanel().refreshButton().click();
         await this.page.waitForLoadState('load');
-        await this.getDocumentByName(docName).scrollIntoViewIfNeeded();
+        await this.documentsList().documentButton(docName).scrollIntoView();
 
     }
-
-
 }
