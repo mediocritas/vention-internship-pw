@@ -1,24 +1,25 @@
-import { Locator, Page } from "@playwright/test";
+import { Page } from "@playwright/test";
 import BaseComponent from "./base-component";
+import ButtonElement from "../elements/button-element";
 
 export default class SaveFileWindowComponent extends BaseComponent {
 
-    readonly myDocOption: Locator;
-    readonly saveButton: Locator;
+    readonly myDocOption = () =>
+        new ButtonElement(this.page.locator('//*[text()="My documents"]'), 'my_documents');
+    readonly saveButton = () =>
+        new ButtonElement(this.page.locator('#dialBtn_OK'), 'save');
 
     constructor(page: Page) {
         super(page);
-        this.myDocOption = page.locator('//*[text()="My documents"]');
-        this.saveButton = page.locator('#dialBtn_OK');
     }
 
     async clickOnSaveButton(maxRetries: number) {
-        await this.saveButton.waitFor({ state: 'visible' });
+        await this.saveButton().waitForVisible();
         for (let i = 0; i < maxRetries; i++) {
-            await this.saveButton.click({ force: true, timeout: 10000 });
-            if (await this.myDocOption
-                .isHidden({ timeout: 300 })) {
-                break;
+            await this.saveButton().click({ force: true, timeout: 10000 });
+            if (await this.myDocOption()
+                .isHidden({ timeout: 500 })) {
+                return;
             }
         }
     }

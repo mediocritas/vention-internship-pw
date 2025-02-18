@@ -1,12 +1,13 @@
-import { Locator, Page } from "@playwright/test";
+import { Page } from "@playwright/test";
 import BaseComponent from "./base-component";
+import ButtonElement from "../elements/button-element";
 
 export default class NewMailFuncPanelComponent extends BaseComponent {
 
-    readonly sendButton : Locator;
-    
-    constructor(page : Page) {
+    readonly sendButton = () =>
+        new ButtonElement(this.page.locator('#mailSend'), 'send');
+
+    constructor(page: Page) {
         super(page);
-        this.sendButton = page.locator('#mailSend');
     }
 } 

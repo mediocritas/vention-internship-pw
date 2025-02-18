@@ -1,22 +1,23 @@
-import { Page, Locator } from "@playwright/test";
+import { Page } from "@playwright/test";
 import BaseComponent from "./base-component";
+import ButtonElement from "../elements/button-element";
 
 export default class HeaderMenuComponent extends BaseComponent {
 
-    readonly messagesButton: Locator;
-    readonly documentsButton: Locator;
+    readonly messagesButton = () => 
+        new ButtonElement(this.page.locator('#nav-mail'), 'messages');
+    readonly documentsButton = () => 
+        new ButtonElement(this.page.locator('#nav-docs'), 'documents');
 
     constructor(page: Page) {
         super(page);
-        this.messagesButton = page.locator('#nav-mail');
-        this.documentsButton = page.locator('#nav-docs');
     }
 
     async openMessagesPage() {
-        await this.messagesButton.click();
+        await this.messagesButton().click();
     }
 
     async openDocumentsPage() {
-        await this.documentsButton.click();
+        await this.documentsButton().click();
     }
 }
