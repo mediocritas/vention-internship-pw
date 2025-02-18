@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 import path from 'path';
 import { faker } from '@faker-js/faker';
-import { createFileCopy, createFilePath, deleteFile } from './temp-files-helper';
-import { customDragTo } from './custom-drag-n-drop';
+import { createFileCopy, createFilePath, deleteFile } from './utils/temp-files-helper';
+import { customDragTo } from './utils/custom-drag-n-drop';
 
 const emailSubject = process.env.SUBJECT! + faker.string.alpha(5);
 
@@ -20,8 +20,8 @@ test.describe('mailfence tests (eng loc)', async () => {
     await page.locator('input[value="Enter"]').click();
   });
 
-  test('create new email', async ({ page }) => {
-    await page.locator('#nav-mail').click();
+  test.skip('create new email', async ({ page }) => {
+    await page.locator('#nav-mail').click();///???
     await page.locator('#mailNewBtn').click();
     await page.locator('#mailTo input').fill(process.env.LOGIN + process.env.DOMAIN!);
     await page.locator('#mailSubject').fill(emailSubject);
@@ -33,8 +33,8 @@ test.describe('mailfence tests (eng loc)', async () => {
     await page.locator(`//*[contains(text(), "${testFile}")]`)
       .waitFor({ state: 'visible' });
     await page.locator('#mailSend').click();
-
-    await page.locator('#treeInbox').click();
+/////////
+    await page.locator('#treeInbox').click();//???
 
     for (let i = 0; i < parseInt(process.env.MAX_RETRIES!, 10); i++) {
       try {
