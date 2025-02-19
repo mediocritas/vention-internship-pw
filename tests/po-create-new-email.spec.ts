@@ -9,7 +9,8 @@ import NewMailPage from '../src/po/pages/new-mail-page';
 
 const emailSubject = process.env.SUBJECT! + faker.string.alpha(5);
 
-const seedFilePath = path.resolve(process.env.FILE_NAME!);
+const seedFilePath = path.resolve('.artefacts/' + process.env.FILE_NAME!);
+const sourceFilePath = path.resolve(process.env.FILE_NAME!);
 let tempFilePath: string;
 
 let mainPage: MainPage;
@@ -29,24 +30,24 @@ test.describe('mailfence tests (eng loc)', async () => {
   test('create new email', async ({ page }) => {
     mailPage = new MailPage(page);
     newMailPage = await mailPage.goToNewEmailPage();
-    const testFile = await createFileCopy(seedFilePath, tempFilePath);
+    const testFileName = await createFileCopy(sourceFilePath, tempFilePath);
     await newMailPage.sendNewEmail(
       {
         addressee: process.env.LOGIN + process.env.DOMAIN!,
         emailSubject: emailSubject,
         textMessage: faker.string.alpha(10),
         filePath: tempFilePath,
-        fileName: testFile
+        fileName: testFileName
       }
     )
 
     await mailPage.waitUntilNewEmailAppears(emailSubject);
     await mailPage.openEmail(emailSubject);
 
-    await mailPage.saveAttachmentInMyDocDir(testFile);
+    await mailPage.saveAttachmentInMyDocDir(testFileName);
 
     docPage = await mailPage.goToDocPage();
-    await docPage.dragDocumentInTrashDirectory(testFile);
+    await docPage.dragDocumentInTrashDirectory(testFileName);
     await docPage.treeMenu().goToTrashDirectory();
     await docPage.waitForDocumentInTrashDirectory(testFile);
     await expect(docPage.documentsList().documentButton(testFile).locator).toBeVisible();
