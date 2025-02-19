@@ -1,4 +1,8 @@
 node_modules/
+create-new-email.spec.ts
+.artefacts
+.vscode
+*.js
 
 # Playwright
 /test-results/
