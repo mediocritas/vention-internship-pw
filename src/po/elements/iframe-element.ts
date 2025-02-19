@@ -1,7 +1,5 @@
 import test, { FrameLocator, Locator } from "@playwright/test";
 import BaseElement from "./base-element";
-import InputElement from "./input-element";
-import TextareaElement from "./text-area-element";
 
 export default class IFrameElement extends BaseElement{
 
