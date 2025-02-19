@@ -23,7 +23,7 @@ test.describe('mailfence tests (eng loc)', async () => {
     tempFilePath = await createFilePath(seedFilePath);
     mainPage = new MainPage(page, process.env.BASE_URL!);
     await mainPage.navigate();
-    await mainPage.getLogin(process.env.LOGIN!, process.env.PASSWORD!)
+    await mainPage.toLogin(process.env.LOGIN!, process.env.PASSWORD!)
   });
 
   test('create new email', async ({ page }) => {

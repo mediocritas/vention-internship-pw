@@ -5,9 +5,9 @@ import ButtonElement from "../elements/button-element";
 export default class HeaderMenuComponent extends BaseComponent {
 
     readonly messagesButton = () => 
-        new ButtonElement(this.page.locator('#nav-mail'), 'messages');
+        new ButtonElement(this.page.locator('#nav-mail'), 'MessagesButton');
     readonly documentsButton = () => 
-        new ButtonElement(this.page.locator('#nav-docs'), 'documents');
+        new ButtonElement(this.page.locator('#nav-docs'), 'DocumentsButton');
 
     constructor(page: Page) {
         super(page);

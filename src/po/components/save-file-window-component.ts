@@ -5,9 +5,9 @@ import ButtonElement from "../elements/button-element";
 export default class SaveFileWindowComponent extends BaseComponent {
 
     readonly myDocOption = () =>
-        new ButtonElement(this.page.locator('//*[text()="My documents"]'), 'my_documents');
+        new ButtonElement(this.page.locator('//*[text()="My documents"]'), 'MyDocumentsDirButton');
     readonly saveButton = () =>
-        new ButtonElement(this.page.locator('#dialBtn_OK'), 'save');
+        new ButtonElement(this.page.locator('#dialBtn_OK'), 'SaveButton');
 
     constructor(page: Page) {
         super(page);

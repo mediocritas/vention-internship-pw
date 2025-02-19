@@ -6,7 +6,7 @@ export default class EmailsListComponent extends BaseComponent {
 
     readonly emailButton = (emailSubject: string) =>
         new ButtonElement(this.page.locator(`.listSubject[title="${emailSubject}"]`),
-            `email ${emailSubject}`);
+            `Email ${emailSubject} button`);
 
     constructor(page: Page) {
         super(page);

@@ -5,9 +5,9 @@ import ButtonElement from "../elements/button-element";
 export default class DocTreeMenuComponent extends BaseComponent{
     
     readonly trashDirButton = () => 
-        new ButtonElement(this.page.locator('#doc_tree_trash'), 'trash');
+        new ButtonElement(this.page.locator('#doc_tree_trash'), 'TrashDirButton');
     readonly myDocDirButton = () => 
-        new ButtonElement(this.page.locator('//*[text()="My documents"]'), 'doc');
+        new ButtonElement(this.page.locator('//*[text()="My documents"]'), 'DocDirButton');
 
     constructor(page: Page) {
         super(page);

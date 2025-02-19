@@ -5,7 +5,7 @@ import ButtonElement from "../elements/button-element";
 export default class DocFuncPanelComponent extends BaseComponent {
 
     readonly refreshButton = () => 
-        new ButtonElement(this.page.locator('[title="Refresh"]'), 'refresh');
+        new ButtonElement(this.page.locator('[title="Refresh"]'), 'RefreshButton');
     
     constructor(page : Page) {
         super(page);

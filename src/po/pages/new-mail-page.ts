@@ -14,19 +14,19 @@ export default class NewMailPage extends BasePage {
     readonly treeMenu = () => new MailTreeMenuComponent(this.page);
     readonly funcPanel = () => new NewMailFuncPanelComponent(this.page);
     readonly mailToInput = () =>
-        new InputElement(this.page.locator('#mailTo input'), 'addressee');
+        new InputElement(this.page.locator('#mailTo input'), 'AddresseeInput');
     readonly mailSubjectInput = () =>
-        new InputElement(this.page.locator('#mailSubject'), 'mailSubject');
+        new InputElement(this.page.locator('#mailSubject'), 'MailSubjectInput');
     readonly textBoxFrame = () =>
-        new IFrameElement(this.page.locator('iframe.editable'), 'text_iframe');
+        new IFrameElement(this.page.locator('iframe.editable'), 'TextIframe');
     readonly textBoxInput = () =>
-        new InputElement(this.page.locator('[role="textbox"]'), 'textbox');
+        new InputElement(this.page.locator('[role="textbox"]'), 'TextboxInput');
     readonly addAttachmentButton = () =>
-        new ButtonElement(this.page.locator('//*[text()="Attachment"]'), 'attachment');
+        new ButtonElement(this.page.locator('//*[text()="Attachment"]'), 'AttachmentButton');
     readonly fileInput = () =>
-        new InputFileElement(this.page.locator('input[type="file"]'), 'file_input');
+        new InputFileElement(this.page.locator('input[type="file"]'), 'FileInput');
     readonly namedAttachementButton = (fileName: string) =>
-        new ButtonElement(this.page.locator(`//*[contains(text(), "${fileName}")]`), `${fileName} file`)
+        new ButtonElement(this.page.locator(`//*[contains(text(), "${fileName}")]`), `${fileName} fileButton`)
 
     constructor(page: Page) {
         super(page);

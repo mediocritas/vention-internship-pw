@@ -7,7 +7,6 @@ import HeaderMenuComponent from "../components/header-menu-component";
 import NewMailPage from "./new-mail-page";
 import DocumentsPage from "./documents-page";
 import ButtonElement from "../elements/button-element";
-import SelectorElement from "../elements/selector-element";
 import EmailsListComponent from "../components/emails-list-component";
 
 export default class MailPage extends BasePage {
@@ -18,17 +17,17 @@ export default class MailPage extends BasePage {
     readonly emailsList = () => new EmailsListComponent(this.page);
     readonly saveFileWindow = () => new SaveFileWindowComponent(this.page);
     readonly saveInDocumentsSelector = () =>
-        new SelectorElement(this.page.locator('//*[text()="Save in Documents"]'),
-            'save_in_documents');
+        new ButtonElement(this.page.locator('//*[text()="Save in Documents"]'),
+            'SaveInDocumentsButton');
     readonly myDocButton = () =>
         new ButtonElement(this.page.locator('//*[text()="My documents"]'),
-            'my_documents_dir');
+            'MyDocumentsDirButton');
     readonly attachmentButton = (attchName: string) =>
         new ButtonElement(this.page.locator(`//*[text()="${attchName}"]`),
-            `${attchName} attachment`);
+            `${attchName} attachmentButton`);
     readonly attchActionsButton = (attchName: string) =>
         new ButtonElement(this.page.locator(`//*[text()="${attchName}"]/*[contains(@class, "icon-Arrow-down")]`),
-            `attachment_actions`
+            `AttachmentActionsButton`
         );
 
     constructor(page: Page) {

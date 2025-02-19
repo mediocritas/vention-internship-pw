@@ -6,7 +6,7 @@ export default class DocumentsListComponent extends BaseComponent {
 
     readonly documentButton = (docName: string) =>
         new ButtonElement(this.page.locator(`//*[text()="${docName}"]/../..`),
-            `${docName} document`);
+            `${docName} documentButton`);
 
     constructor(page: Page) {
         super(page);
