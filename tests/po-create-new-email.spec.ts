@@ -49,8 +49,9 @@ test.describe('mailfence tests (eng loc)', async () => {
     docPage = await mailPage.goToDocPage();
     await docPage.dragDocumentInTrashDirectory(testFileName);
     await docPage.treeMenu().goToTrashDirectory();
-    await docPage.waitForDocumentInTrashDirectory(testFile);
-    await expect(docPage.documentsList().documentButton(testFile).locator).toBeVisible();
+    await docPage.waitForDocumentInTrashDirectory(testFileName);
+    await expect(docPage.documentsList().documentButton(testFileName).locator,
+      'error: file not found in trash directory').toBeVisible();
   });
 
 });
