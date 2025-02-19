@@ -20,7 +20,7 @@ export default class NewMailPage extends BasePage {
     readonly textBoxFrame = () =>
         new IFrameElement(this.page.locator('iframe.editable'), 'TextIframe');
     readonly textBoxInput = () =>
-        new InputElement(this.page.locator('[role="textbox"]'), 'TextboxInput');
+        new InputElement(this.textBoxFrame().frameLocator.locator('[role="textbox"]'), 'TextboxInput');
     readonly addAttachmentButton = () =>
         new ButtonElement(this.page.locator('//*[text()="Attachment"]'), 'AttachmentButton');
     readonly fileInput = () =>
@@ -42,7 +42,7 @@ export default class NewMailPage extends BasePage {
     ) {
         await this.mailToInput().fill(options.addressee);
         await this.mailSubjectInput().fill(options.emailSubject);
-        await (await this.textBoxFrame().childElement(this.textBoxInput())).fill(options.textMessage);
+        await this.textBoxInput().fill(options.textMessage);
         await this.addAttachmentButton().click();
         await this.fileInput().setInputFiles(options.filePath);
         await this.namedAttachementButton(options.fileName).waitForVisible();
