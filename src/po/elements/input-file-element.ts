@@ -1,5 +1,6 @@
-import test, { Locator } from "@playwright/test";
+import { Locator } from "@playwright/test";
 import BaseElement from "./base-element";
+import { step } from "../decorators/element-decorators";
 
 export default class InputFileElement extends BaseElement {
 
@@ -7,9 +8,8 @@ export default class InputFileElement extends BaseElement {
         super(locator, name);
     }
 
+    @step('Input file into the element')
     async setInputFiles(filePath: string) {
-        return await test.step(`Fill the ${this.name} file input element`, async () => {
-            return this.locator.setInputFiles(filePath);
-        });
+        return this.locator.setInputFiles(filePath);
     }
 }

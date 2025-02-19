@@ -1,14 +1,14 @@
-import test, { Locator } from "@playwright/test";
+import { Locator } from "@playwright/test";
 import BaseElement from "./base-element";
+import { step } from "../decorators/element-decorators";
 
 export default class ButtonElement extends BaseElement {
     constructor(locator: Locator, name?: string) {
         super(locator, name)
     }
 
+    @step('Check if the element is enabled')
     async isEnabled() {
-        return test.step(`Check if element ${this.name} is enabled`, async () => {
-            return this.locator.isEnabled();
-        });
+        return this.locator.isEnabled();
     }
 }

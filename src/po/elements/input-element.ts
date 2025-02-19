@@ -1,5 +1,6 @@
-import test, { Locator } from "@playwright/test";
+import { Locator } from "@playwright/test";
 import BaseElement from "./base-element";
+import { step } from "../decorators/element-decorators";
 
 export default class InputElement extends BaseElement {
 
@@ -7,9 +8,8 @@ export default class InputElement extends BaseElement {
         super(locator, name);
     }
 
+    @step('Input into the element')
     async fill(text: string) {
-        return await test.step(`Fill the ${this.name} input element`, async () => {
-            return this.locator.fill(text);
-        });
+        return this.locator.fill(text);
     }
 }

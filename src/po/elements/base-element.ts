@@ -1,13 +1,5 @@
-import test, { Locator } from "@playwright/test";
-
-function step(target: any, context: ClassMethodDecoratorContext) {
-  return function replacementMethod(this: any, ...args: any) {
-    const name = `${this.constructor.name} ${this.name} ${String(context.name)}`;
-    return test.step(name, async () => {
-      return await target.apply(this, args);
-    });
-  };
-}
+import { Locator } from "@playwright/test";
+import { step } from "../decorators/element-decorators";
 
 export default class BaseElement {
 
@@ -16,57 +8,50 @@ export default class BaseElement {
 
     constructor(locator: Locator, name?: string) {
         this.locator = locator;
-        this.name = name;
+        this.name = name || (this.constructor.name + locator);
     }
 
-    @step
+    @step('Clicking on the element')
     async click(options?: { force?: boolean, timeout?: number }) {
         const finalOptions = {
-            ...options,  
-            force: options?.force || false 
+            ...options,
+            force: options?.force || false
         };
-            return this.locator.click(finalOptions);
+        return this.locator.click(finalOptions);
     }
 
+    @step('Hover on the element')
     async hover(options?: { timeout?: number }) {
-        return await test.step(`Hover on the ${this.name} element`, async () => {
-            return this.locator.hover(options);
-        });
+        return this.locator.hover(options);
     }
 
+    @step('Scroll to the element')
     async scrollIntoView(options?: { timeout?: number }) {
-        return await test.step(`Scroll to the ${this.name} element`, async () => {
-            return this.locator.scrollIntoViewIfNeeded(options);
-        });
+        return this.locator.scrollIntoViewIfNeeded(options);
     }
 
+    @step('Wait for the element is visible')
     async waitForVisible(options?: { timeout?: number }) {
-        return await test.step(`Wait for the ${this.name} element to be visible`, async () => {
-            return this.locator.waitFor({ state: 'visible', timeout: options?.timeout });
-        });
+        return this.locator.waitFor({ state: 'visible', timeout: options?.timeout });
     }
 
+    @step('Wait for the element is attached')
     async waitForAttached(options?: { timeout?: number }) {
-        return await test.step(`Wait for the ${this.name} element to be attached`, async () => {
-            return this.locator.waitFor({ state: 'attached', timeout: options?.timeout });
-        });
+        return this.locator.waitFor({ state: 'attached', timeout: options?.timeout });
     }
 
+    @step('Check if the element is visible')
     async isVisible(options?: { timeout?: number }) {
-        return await test.step(`Check if element ${this.name} is visible`, async () => {
-            return this.locator.isVisible(options);
-        });
+        return this.locator.isVisible(options);
     }
 
+    @step('Check if the element is hidden')
     async isHidden(options?: { timeout?: number }) {
-        return await test.step(`Check if element ${this.name} is hidden`, async () => {
-            return this.locator.isHidden(options);
-        });
+        return this.locator.isHidden(options);
     }
 
+    @step('Get the box of the element')
     async box(options?: { timeout?: number }) {
-        return await test.step(`Get box of the element ${this.name}`, async () => {
-            return await this.locator.boundingBox(options);
-        });
+        return await this.locator.boundingBox(options);
     }
 }
