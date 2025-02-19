@@ -21,7 +21,7 @@ test.describe('mailfence tests (eng loc)', async () => {
 
   test.beforeEach('login', async ({ page }) => {
     tempFilePath = await createFilePath(seedFilePath);
-    mainPage = new MainPage(page, process.env.BASE_URL!);
+    mainPage = new MainPage(page);
     await mainPage.navigate();
     await mainPage.toLogin(process.env.LOGIN!, process.env.PASSWORD!)
   });
@@ -34,7 +34,7 @@ test.describe('mailfence tests (eng loc)', async () => {
       {
         addressee: process.env.LOGIN + process.env.DOMAIN!,
         emailSubject: emailSubject,
-        textMessage: process.env.TEXTBOX_TEXT!,
+        textMessage: faker.string.alpha(10),
         filePath: tempFilePath,
         fileName: testFile
       }
