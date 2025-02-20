@@ -30,7 +30,7 @@ export default class MailPage extends BasePage {
             `AttachmentActionsButton`
         );
 
-    constructor(page: Page) {
+    constructor(page?: Page) {
         super(page);
     }
 

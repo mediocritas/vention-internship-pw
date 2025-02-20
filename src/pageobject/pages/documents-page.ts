@@ -13,7 +13,7 @@ export default class DocumentsPage extends BasePage {
     readonly header = () => new HeaderMenuComponent(this.page);
     readonly documentsList = () => new DocumentsListComponent(this.page);
 
-    constructor(page: Page) {
+    constructor(page?: Page) {
         super(page);
     }
 

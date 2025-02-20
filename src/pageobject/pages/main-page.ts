@@ -14,7 +14,7 @@ export default class MainPage extends BasePage {
     readonly enterButton = () =>
         new ButtonElement(this.page.locator('//input[@value="Enter"]'), 'GetLoginButton')
 
-    constructor(page: Page, url?: string) {
+    constructor(page?: Page, url?: string) {
         super(page);
         this.url = process.env.BASE_URL!;
     }

@@ -28,7 +28,7 @@ export default class NewMailPage extends BasePage {
     readonly namedAttachementButton = (fileName: string) =>
         new ButtonElement(this.page.locator(`//*[contains(text(), "${fileName}")]`), `${fileName} fileButton`)
 
-    constructor(page: Page) {
+    constructor(page?: Page) {
         super(page);
     }
 
