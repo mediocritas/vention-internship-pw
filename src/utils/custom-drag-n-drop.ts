@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test';
-import BaseElement from '../../src/po/elements/base-element';
+import BaseElement from '../pageobject/elements/base-element';
 
 export const customDragTo = async (source: BaseElement, target: BaseElement, page: Page) => {
 
