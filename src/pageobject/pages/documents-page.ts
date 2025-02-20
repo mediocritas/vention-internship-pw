@@ -2,7 +2,7 @@ import { Page } from "@playwright/test";
 import BasePage from "./base-page";
 import DocTreeMenuComponent from "../components/doc-tree-menu-component";
 import HeaderMenuComponent from "../components/header-menu-component";
-import { customDragTo } from "../../../tests/utils/custom-drag-n-drop";
+import { customDragTo } from "../../utils/custom-drag-n-drop";
 import DocFuncPanelComponent from "../components/doc-func-panel-component";
 import DocumentsListComponent from "../components/documents-list-component";
 
