@@ -1,5 +1,6 @@
 import { Locator } from "@playwright/test";
 import { step } from "../decorators/element-decorators";
+import { getPage } from "../../core/page-utils";
 
 export default class BaseElement {
 
@@ -53,5 +54,26 @@ export default class BaseElement {
     @step('Get the box of the element')
     async box(options?: { timeout?: number }) {
         return await this.locator.boundingBox(options);
+    }
+
+    @step('Drag element to the target element')
+    async customDragTo(target: BaseElement) {
+
+        const targetElementBox = (await target.box())!;
+
+        try {
+            await this.hover();
+            await getPage().mouse.down();
+            await getPage().mouse.move(
+                targetElementBox.x,
+                targetElementBox.y,
+                { steps: 20 }
+            );
+            await target.waitForVisible();
+            await getPage().mouse.up();
+        } catch (error) {
+            console.error(`Elements or elements' boxes don't exist`)
+            throw error;
+        }
     }
 }
