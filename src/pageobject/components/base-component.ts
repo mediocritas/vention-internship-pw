@@ -1,5 +1,5 @@
 import { Page } from "@playwright/test";
 
-export default class BaseComponent {
+export default abstract class BaseComponent {
 
 }
