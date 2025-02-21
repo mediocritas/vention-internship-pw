@@ -1,12 +1,9 @@
-import {  expect } from '@playwright/test';
-import {test} from './fixtures/page-fixture'
+import { expect } from '@playwright/test';
+import { test } from './fixtures/page-fixture'
 import path from 'path';
 import { faker } from '@faker-js/faker';
 import { createFileCopy, createFilePath, deleteFile } from '../src/utils/temp-files-helper';
-import MainPage from '../src/pageobject/pages/main-page';
-import MailPage from '../src/pageobject/pages/mail-page';
-import DocumentsPage from '../src/pageobject/pages/documents-page';
-import NewMailPage from '../src/pageobject/pages/new-mail-page';
+import PageFactory from '../src/pageobject/pages/page-factory';
 
 const emailSubject = process.env.SUBJECT! + faker.string.alpha(5);
 
@@ -15,24 +12,19 @@ const sourceFilePath = path.resolve(process.env.FILE_NAME!);
 let tempFilePath: string;
 let testFileName: string;
 
-let mainPage: MainPage;
-let mailPage: MailPage;
-let newMailPage: NewMailPage;
-let docPage: DocumentsPage;
-
 test.describe('mailfence tests (eng loc)', async () => {
 
-  test.beforeEach('login', async ({  }) => {
+  test.beforeEach('login', async ({ }) => {
     tempFilePath = await createFilePath(seedFilePath);
     testFileName = await createFileCopy(sourceFilePath, tempFilePath);
-    mainPage = new MainPage();
+    const mainPage = PageFactory.getMainPage();
     await mainPage.navigate();
-    await mainPage.toLogin(process.env.LOGIN!, process.env.PASSWORD!)
+    await mainPage.toLogin(process.env.LOGIN!, process.env.PASSWORD!);
   });
 
   test('create new email', async ({ }) => {
-    mailPage = new MailPage();
-    newMailPage = await mailPage.goToNewEmailPage();
+    const mailPage = PageFactory.getMailPage();
+    const newMailPage = await mailPage.goToNewEmailPage();
     await newMailPage.sendNewEmail(
       {
         addressee: process.env.LOGIN + process.env.DOMAIN!,
@@ -48,7 +40,7 @@ test.describe('mailfence tests (eng loc)', async () => {
 
     await mailPage.saveAttachmentInMyDocDir(testFileName);
 
-    docPage = await mailPage.goToDocPage();
+    const docPage = await mailPage.goToDocPage();
     await docPage.dragDocumentInTrashDirectory(testFileName);
     await docPage.treeMenu().goToTrashDirectory();
     await docPage.waitForDocumentInTrashDirectory(testFileName);
