@@ -1,23 +1,18 @@
-import { Page } from '@playwright/test';
 import BasePage from './base-page';
 import ButtonElement from '../elements/button-element';
 import InputElement from '../elements/input-element';
+import { getPage } from '../../core/page-utils';
 
 export default class MainPage extends BasePage {
-    readonly url: string;
+    readonly url: string = process.env.BASE_URL!;
     readonly loginButton = () =>
-        new ButtonElement(this.page.locator('//button[@id="signin"]'), 'SigninButton');
+        new ButtonElement(getPage().locator('//button[@id="signin"]'), 'SigninButton');
     readonly usernameInput = () =>
-        new InputElement(this.page.locator('//input[@id="UserID"]'), 'UsernameInput')
+        new InputElement(getPage().locator('//input[@id="UserID"]'), 'UsernameInput')
     readonly passwordInput = () =>
-        new InputElement(this.page.locator('//input[@id="Password"]'), 'PasswordInput')
+        new InputElement(getPage().locator('//input[@id="Password"]'), 'PasswordInput')
     readonly enterButton = () =>
-        new ButtonElement(this.page.locator('//input[@value="Enter"]'), 'GetLoginButton')
-
-    constructor(page?: Page, url?: string) {
-        super(page);
-        this.url = process.env.BASE_URL!;
-    }
+        new ButtonElement(getPage().locator('//input[@value="Enter"]'), 'GetLoginButton')
 
     async navigate() {
         await super.goto(this.url);

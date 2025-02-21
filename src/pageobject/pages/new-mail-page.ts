@@ -7,30 +7,27 @@ import ButtonElement from "../elements/button-element";
 import IFrameElement from "../elements/iframe-element";
 import InputFileElement from "../elements/input-file-element";
 import HeaderMenuComponent from "../components/header-menu-component";
+import { getPage } from "../../core/page-utils";
 
 export default class NewMailPage extends BasePage {
 
-    readonly header = () => new HeaderMenuComponent(this.page);
-    readonly treeMenu = () => new MailTreeMenuComponent(this.page);
-    readonly funcPanel = () => new NewMailFuncPanelComponent(this.page);
+    readonly header = () => new HeaderMenuComponent();
+    readonly treeMenu = () => new MailTreeMenuComponent();
+    readonly funcPanel = () => new NewMailFuncPanelComponent();
     readonly mailToInput = () =>
-        new InputElement(this.page.locator('#mailTo input'), 'AddresseeInput');
+        new InputElement(getPage().locator('#mailTo input'), 'AddresseeInput');
     readonly mailSubjectInput = () =>
-        new InputElement(this.page.locator('#mailSubject'), 'MailSubjectInput');
+        new InputElement(getPage().locator('#mailSubject'), 'MailSubjectInput');
     readonly textBoxFrame = () =>
-        new IFrameElement(this.page.locator('iframe.editable'), 'TextIframe');
+        new IFrameElement(getPage().locator('iframe.editable'), 'TextIframe');
     readonly textBoxInput = () =>
         new InputElement(this.textBoxFrame().frameLocator.locator('[role="textbox"]'), 'TextboxInput');
     readonly addAttachmentButton = () =>
-        new ButtonElement(this.page.locator('//*[text()="Attachment"]'), 'AttachmentButton');
+        new ButtonElement(getPage().locator('//*[text()="Attachment"]'), 'AttachmentButton');
     readonly fileInput = () =>
-        new InputFileElement(this.page.locator('input[type="file"]'), 'FileInput');
+        new InputFileElement(getPage().locator('input[type="file"]'), 'FileInput');
     readonly namedAttachementButton = (fileName: string) =>
-        new ButtonElement(this.page.locator(`//*[contains(text(), "${fileName}")]`), `${fileName} fileButton`)
-
-    constructor(page?: Page) {
-        super(page);
-    }
+        new ButtonElement(getPage().locator(`//*[contains(text(), "${fileName}")]`), `${fileName} fileButton`)
 
     async sendNewEmail(options: {
         addressee: string,

@@ -1,4 +1,3 @@
-import { Page } from "@playwright/test";
 import BasePage from "./base-page";
 import MailTreeMenuComponent from "../components/mail-tree-menu-component";
 import MailFuncPanelComponent from "../components/mail-func-panel-component";
@@ -8,40 +7,37 @@ import NewMailPage from "./new-mail-page";
 import DocumentsPage from "./documents-page";
 import ButtonElement from "../elements/button-element";
 import EmailsListComponent from "../components/emails-list-component";
+import { getPage } from "../../core/page-utils";
 
 export default class MailPage extends BasePage {
 
-    readonly header = () => new HeaderMenuComponent(this.page);
-    readonly treeMenu = () => new MailTreeMenuComponent(this.page);
-    readonly funcPanel = () => new MailFuncPanelComponent(this.page);
-    readonly emailsList = () => new EmailsListComponent(this.page);
-    readonly saveFileWindow = () => new SaveFileWindowComponent(this.page);
+    readonly header = () => new HeaderMenuComponent();
+    readonly treeMenu = () => new MailTreeMenuComponent();
+    readonly funcPanel = () => new MailFuncPanelComponent();
+    readonly emailsList = () => new EmailsListComponent();
+    readonly saveFileWindow = () => new SaveFileWindowComponent();
     readonly saveInDocumentsSelector = () =>
-        new ButtonElement(this.page.locator('//*[text()="Save in Documents"]'),
+        new ButtonElement(getPage().locator('//*[text()="Save in Documents"]'),
             'SaveInDocumentsButton');
     readonly myDocButton = () =>
-        new ButtonElement(this.page.locator('//*[text()="My documents"]'),
+        new ButtonElement(getPage().locator('//*[text()="My documents"]'),
             'MyDocumentsDirButton');
     readonly attachmentButton = (attchName: string) =>
-        new ButtonElement(this.page.locator(`//*[text()="${attchName}"]`),
+        new ButtonElement(getPage().locator(`//*[text()="${attchName}"]`),
             `${attchName} attachmentButton`);
     readonly attchActionsButton = (attchName: string) =>
-        new ButtonElement(this.page.locator(`//*[text()="${attchName}"]/*[contains(@class, "icon-Arrow-down")]`),
+        new ButtonElement(getPage().locator(`//*[text()="${attchName}"]/*[contains(@class, "icon-Arrow-down")]`),
             `AttachmentActionsButton`
         );
 
-    constructor(page?: Page) {
-        super(page);
-    }
-
     async goToNewEmailPage(): Promise<NewMailPage> {
         await this.funcPanel().newMessageButton().click();
-        return new NewMailPage(this.page);
+        return new NewMailPage();
     }
 
     async goToDocPage(): Promise<DocumentsPage> {
         await this.header().documentsButton().click();
-        return new DocumentsPage(this.page);
+        return new DocumentsPage();
     }
 
     async waitUntilNewEmailAppears(emailSubject: string) {

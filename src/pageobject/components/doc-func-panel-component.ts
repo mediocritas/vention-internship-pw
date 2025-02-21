@@ -1,13 +1,9 @@
-import { Page } from "@playwright/test";
 import BaseComponent from "./base-component";
 import ButtonElement from "../elements/button-element";
+import { getPage } from "../../core/page-utils";
 
 export default class DocFuncPanelComponent extends BaseComponent {
 
-    readonly refreshButton = () => 
-        new ButtonElement(this.page.locator('[title="Refresh"]'), 'RefreshButton');
-    
-    constructor(page : Page) {
-        super(page);
-    }
+    readonly refreshButton = () =>
+        new ButtonElement(getPage().locator('[title="Refresh"]'), 'RefreshButton');
 } 

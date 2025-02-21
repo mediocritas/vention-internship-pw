@@ -1,15 +1,11 @@
-import { Page } from '@playwright/test';
 import { getPage } from '../../core/page-utils';
 
 export default class BasePage {
 
-    readonly page: Page;
-
-    constructor(page?: Page) {
-        this.page = page || getPage();
+    constructor() {
     }
 
     async goto(url: string) {
-        await this.page.goto(url);
+        await getPage().goto(url);
     }
 }

@@ -1,15 +1,11 @@
-import { Page } from "@playwright/test";
 import BaseComponent from "./base-component";
 import ButtonElement from "../elements/button-element";
+import { getPage } from "../../core/page-utils";
 
 export default class MailFuncPanelComponent extends BaseComponent {
 
     readonly newMessageButton = () =>
-        new ButtonElement(this.page.locator('#mailNewBtn'), 'NewEmailButton');
+        new ButtonElement(getPage().locator('#mailNewBtn'), 'NewEmailButton');
     readonly refreshButton = () => 
-        new ButtonElement(this.page.locator('[title="Refresh"]'), 'RefreshButton');
-    
-    constructor(page : Page) {
-        super(page);
-    }
+        new ButtonElement(getPage().locator('[title="Refresh"]'), 'RefreshButton');
 } 

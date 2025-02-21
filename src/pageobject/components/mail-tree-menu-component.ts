@@ -1,14 +1,9 @@
-import { Page } from "@playwright/test";
 import BaseComponent from "./base-component";
 import ButtonElement from "../elements/button-element";
+import { getPage } from "../../core/page-utils";
 
 export default class MailTreeMenuComponent extends BaseComponent {
 
     readonly inboxMessages = () =>
-        new ButtonElement(this.page.locator('#treeInbox'), 'IncomingMessagesDirButton');
-
-    constructor(page: Page) {
-        super(page);
-    }
-
+        new ButtonElement(getPage().locator('#treeInbox'), 'IncomingMessagesDirButton');
 }

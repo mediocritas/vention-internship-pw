@@ -1,14 +1,11 @@
-import { Page } from "@playwright/test";
 import BaseComponent from "./base-component";
 import ButtonElement from "../elements/button-element";
+import { getPage } from "../../core/page-utils";
 
 export default class EmailsListComponent extends BaseComponent {
 
     readonly emailButton = (emailSubject: string) =>
-        new ButtonElement(this.page.locator(`.listSubject[title="${emailSubject}"]`),
+        new ButtonElement(getPage().locator(`.listSubject[title="${emailSubject}"]`),
             `Email ${emailSubject} button`);
 
-    constructor(page: Page) {
-        super(page);
-    }
 }
