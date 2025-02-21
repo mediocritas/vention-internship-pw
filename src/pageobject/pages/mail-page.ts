@@ -3,48 +3,44 @@ import MailTreeMenuComponent from "../components/mail-tree-menu-component";
 import MailFuncPanelComponent from "../components/mail-func-panel-component";
 import SaveFileWindowComponent from "../components/save-file-window-component";
 import HeaderMenuComponent from "../components/header-menu-component";
-import NewMailPage from "./new-mail-page";
-import DocumentsPage from "./documents-page";
 import ButtonElement from "../elements/button-element";
 import EmailsListComponent from "../components/emails-list-component";
 import { getPage } from "../../core/page-utils";
 
 export default class MailPage extends BasePage {
 
-    readonly header = () => new HeaderMenuComponent();
-    readonly treeMenu = () => new MailTreeMenuComponent();
-    readonly funcPanel = () => new MailFuncPanelComponent();
-    readonly emailsList = () => new EmailsListComponent();
-    readonly saveFileWindow = () => new SaveFileWindowComponent();
-    readonly saveInDocumentsSelector = () =>
+    static readonly header = () => new HeaderMenuComponent();
+    static readonly treeMenu = () => new MailTreeMenuComponent();
+    static readonly funcPanel = () => new MailFuncPanelComponent();
+    static readonly emailsList = () => new EmailsListComponent();
+    static readonly saveFileWindow = () => new SaveFileWindowComponent();
+    static readonly saveInDocumentsSelector = () =>
         new ButtonElement(getPage().locator('//*[text()="Save in Documents"]'),
             'SaveInDocumentsButton');
-    readonly myDocButton = () =>
+    static readonly myDocButton = () =>
         new ButtonElement(getPage().locator('//*[text()="My documents"]'),
             'MyDocumentsDirButton');
-    readonly attachmentButton = (attchName: string) =>
+    static readonly attachmentButton = (attchName: string) =>
         new ButtonElement(getPage().locator(`//*[text()="${attchName}"]`),
             `${attchName} attachmentButton`);
-    readonly attchActionsButton = (attchName: string) =>
+    static readonly attchActionsButton = (attchName: string) =>
         new ButtonElement(getPage().locator(`//*[text()="${attchName}"]/*[contains(@class, "icon-Arrow-down")]`),
             `AttachmentActionsButton`
         );
 
-    async goToNewEmailPage(): Promise<NewMailPage> {
+    static async goToNewEmailPage() {
         await this.funcPanel().newMessageButton().click();
-        return new NewMailPage();
     }
 
-    async goToDocPage(): Promise<DocumentsPage> {
+    static async goToDocPage() {
         await this.header().documentsButton().click();
-        return new DocumentsPage();
     }
 
-    async waitUntilNewEmailAppears(emailSubject: string) {
+    static async waitUntilNewEmailAppears(emailSubject: string) {
         for (let i = 0; i < parseInt(process.env.MAX_RETRIES!, 10); i++) {
             try {
                 await this.emailsList().emailButton(emailSubject)
-                .waitForVisible({ timeout: 1000 });
+                    .waitForVisible({ timeout: 1000 });
                 return;
             } catch {
                 await this.funcPanel().refreshButton().click();
@@ -52,11 +48,11 @@ export default class MailPage extends BasePage {
         }
     }
 
-    async openEmail(emailSubject: string) {
+    static async openEmail(emailSubject: string) {
         await this.emailsList().emailButton(emailSubject).click();
     }
 
-    async saveAttachmentInMyDocDir(attchName: string) {
+    static async saveAttachmentInMyDocDir(attchName: string) {
         await this.attachmentButton(attchName).hover();
         await this.attchActionsButton(attchName).click();
         await this.saveInDocumentsSelector().click();

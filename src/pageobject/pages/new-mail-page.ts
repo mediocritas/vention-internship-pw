@@ -1,4 +1,3 @@
-import { Page } from "@playwright/test";
 import MailTreeMenuComponent from "../components/mail-tree-menu-component";
 import NewMailFuncPanelComponent from "../components/new-mail-func-panel-component";
 import BasePage from "./base-page";
@@ -11,25 +10,25 @@ import { getPage } from "../../core/page-utils";
 
 export default class NewMailPage extends BasePage {
 
-    readonly header = () => new HeaderMenuComponent();
-    readonly treeMenu = () => new MailTreeMenuComponent();
-    readonly funcPanel = () => new NewMailFuncPanelComponent();
-    readonly mailToInput = () =>
+    static readonly header = () => new HeaderMenuComponent();
+    static readonly treeMenu = () => new MailTreeMenuComponent();
+    static readonly funcPanel = () => new NewMailFuncPanelComponent();
+    static readonly mailToInput = () =>
         new InputElement(getPage().locator('#mailTo input'), 'AddresseeInput');
-    readonly mailSubjectInput = () =>
+    static readonly mailSubjectInput = () =>
         new InputElement(getPage().locator('#mailSubject'), 'MailSubjectInput');
-    readonly textBoxFrame = () =>
+    static readonly textBoxFrame = () =>
         new IFrameElement(getPage().locator('iframe.editable'), 'TextIframe');
-    readonly textBoxInput = () =>
+    static readonly textBoxInput = () =>
         new InputElement(this.textBoxFrame().frameLocator.locator('[role="textbox"]'), 'TextboxInput');
-    readonly addAttachmentButton = () =>
+    static readonly addAttachmentButton = () =>
         new ButtonElement(getPage().locator('//*[text()="Attachment"]'), 'AttachmentButton');
-    readonly fileInput = () =>
+    static readonly fileInput = () =>
         new InputFileElement(getPage().locator('input[type="file"]'), 'FileInput');
-    readonly namedAttachementButton = (fileName: string) =>
+    static readonly namedAttachementButton = (fileName: string) =>
         new ButtonElement(getPage().locator(`//*[contains(text(), "${fileName}")]`), `${fileName} fileButton`)
 
-    async sendNewEmail(options: {
+    static async sendNewEmail(options: {
         addressee: string,
         emailSubject: string,
         textMessage: string,
