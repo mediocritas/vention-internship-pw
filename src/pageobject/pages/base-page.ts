@@ -1,11 +1,11 @@
 import { getPage } from '../../core/page-utils';
 
-export default class BasePage {
+export default abstract class BasePage {
 
-    constructor() {
+    protected constructor() {
     }
 
-    async goto(url: string) {
+    static async goto(url: string) {
         await getPage().goto(url);
     }
 }
