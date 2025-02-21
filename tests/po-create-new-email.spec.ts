@@ -3,7 +3,10 @@ import { test } from './fixtures/page-fixture'
 import path from 'path';
 import { faker } from '@faker-js/faker';
 import { createFileCopy, createFilePath, deleteFile } from '../src/utils/temp-files-helper';
-import PageFactory from '../src/pageobject/pages/page-factory';
+import MainPage from '../src/pageobject/pages/main-page';
+import MailPage from '../src/pageobject/pages/mail-page';
+import DocumentsPage from '../src/pageobject/pages/documents-page';
+import NewMailPage from '../src/pageobject/pages/new-mail-page';
 
 const emailSubject = process.env.SUBJECT! + faker.string.alpha(5);
 
@@ -17,15 +20,13 @@ test.describe('mailfence tests (eng loc)', async () => {
   test.beforeEach('login', async ({ }) => {
     tempFilePath = await createFilePath(seedFilePath);
     testFileName = await createFileCopy(sourceFilePath, tempFilePath);
-    const mainPage = PageFactory.getMainPage();
-    await mainPage.navigate();
-    await mainPage.toLogin(process.env.LOGIN!, process.env.PASSWORD!);
+    await MainPage.navigate();
+    await MainPage.toLogin(process.env.LOGIN!, process.env.PASSWORD!);
   });
 
   test('create new email', async ({ }) => {
-    const mailPage = PageFactory.getMailPage();
-    const newMailPage = await mailPage.goToNewEmailPage();
-    await newMailPage.sendNewEmail(
+    await MailPage.goToNewEmailPage();
+    await NewMailPage.sendNewEmail(
       {
         addressee: process.env.LOGIN + process.env.DOMAIN!,
         emailSubject: emailSubject,
@@ -35,16 +36,16 @@ test.describe('mailfence tests (eng loc)', async () => {
       }
     )
 
-    await mailPage.waitUntilNewEmailAppears(emailSubject);
-    await mailPage.openEmail(emailSubject);
+    await MailPage.waitUntilNewEmailAppears(emailSubject);
+    await MailPage.openEmail(emailSubject);
 
-    await mailPage.saveAttachmentInMyDocDir(testFileName);
+    await MailPage.saveAttachmentInMyDocDir(testFileName);
 
-    const docPage = await mailPage.goToDocPage();
-    await docPage.dragDocumentInTrashDirectory(testFileName);
-    await docPage.treeMenu().goToTrashDirectory();
-    await docPage.waitForDocumentInTrashDirectory(testFileName);
-    await expect(docPage.documentsList().documentButton(testFileName).locator,
+    await MailPage.goToDocPage();
+    await DocumentsPage.dragDocumentInTrashDirectory(testFileName);
+    await DocumentsPage.treeMenu().goToTrashDirectory();
+    await DocumentsPage.waitForDocumentInTrashDirectory(testFileName);
+    await expect(DocumentsPage.documentsList().documentButton(testFileName).locator,
       `error: file ${testFileName} not found in trash directory`).toBeVisible();
   });
 
