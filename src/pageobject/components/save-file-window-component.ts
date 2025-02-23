@@ -14,7 +14,7 @@ export default class SaveFileWindowComponent extends BaseComponent {
         for (let i = 0; i < maxRetries; i++) {
             await this.saveButton().click({ force: true, timeout: 10000 });
             if (await this.myDocOption()
-                .isHidden({ timeout: 500 })) {
+                .isHidden({ timeout: 700 })) {
                 return;
             }
         }

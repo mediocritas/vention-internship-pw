@@ -2,6 +2,7 @@ import BasePage from './base-page';
 import ButtonElement from '../elements/button-element';
 import InputElement from '../elements/input-element';
 import { getPage } from '../../core/page-utils';
+import { step } from '../decorators/page-decorators';
 
 export default class MainPage extends BasePage {
     static readonly url: string = process.env.BASE_URL!;
@@ -14,10 +15,12 @@ export default class MainPage extends BasePage {
     static readonly enterButton = () =>
         new ButtonElement(getPage().locator('//input[@value="Enter"]'), 'GetLoginButton')
 
+    @step('Going to the MainPage')
     static async navigate() {
         await super.goto(this.url);
     }
 
+    @step('Login on website')
     static async toLogin(login: string, password: string) {
         await this.loginButton().click();
         await this.usernameInput().fill(login);

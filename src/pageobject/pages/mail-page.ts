@@ -6,6 +6,7 @@ import HeaderMenuComponent from "../components/header-menu-component";
 import ButtonElement from "../elements/button-element";
 import EmailsListComponent from "../components/emails-list-component";
 import { getPage } from "../../core/page-utils";
+import { step } from "../decorators/page-decorators";
 
 export default class MailPage extends BasePage {
 
@@ -28,14 +29,22 @@ export default class MailPage extends BasePage {
             `AttachmentActionsButton`
         );
 
+    @step('Going to the MailPage')
+    static async navigate() {
+        await super.goto(this.url);
+    }
+
+    @step('Going to NewEmailPage')
     static async goToNewEmailPage() {
         await this.funcPanel().newMessageButton().click();
     }
 
+    @step('Going to DocPage')
     static async goToDocPage() {
         await this.header().documentsButton().click();
     }
 
+    @step('Waiting until new email appear')
     static async waitUntilNewEmailAppears(emailSubject: string) {
         for (let i = 0; i < parseInt(process.env.MAX_RETRIES!, 10); i++) {
             try {
@@ -48,6 +57,7 @@ export default class MailPage extends BasePage {
         }
     }
 
+    @step('Opening new email')
     static async openEmail(emailSubject: string) {
         await this.emailsList().emailButton(emailSubject).click();
     }

@@ -7,6 +7,7 @@ import IFrameElement from "../elements/iframe-element";
 import InputFileElement from "../elements/input-file-element";
 import HeaderMenuComponent from "../components/header-menu-component";
 import { getPage } from "../../core/page-utils";
+import { step } from "../decorators/page-decorators";
 
 export default class NewMailPage extends BasePage {
 
@@ -28,6 +29,7 @@ export default class NewMailPage extends BasePage {
     static readonly namedAttachementButton = (fileName: string) =>
         new ButtonElement(getPage().locator(`//*[contains(text(), "${fileName}")]`), `${fileName} fileButton`)
 
+    @step('Creating and sending new email')
     static async sendNewEmail(options: {
         addressee: string,
         emailSubject: string,
