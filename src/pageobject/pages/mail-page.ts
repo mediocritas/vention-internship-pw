@@ -9,7 +9,7 @@ import { getPage } from "../../core/page-utils";
 import { step } from "../decorators/page-decorators";
 
 export default class MailPage extends BasePage {
-
+    static readonly url: string = process.env.BASE_URL! + 'flatx';
     static readonly header = () => new HeaderMenuComponent();
     static readonly treeMenu = () => new MailTreeMenuComponent();
     static readonly funcPanel = () => new MailFuncPanelComponent();

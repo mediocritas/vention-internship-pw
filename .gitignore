@@ -10,3 +10,4 @@ create-new-email.spec.ts
 /blob-report/
 /playwright/.cache/
 /tests-examples/
+*.auth

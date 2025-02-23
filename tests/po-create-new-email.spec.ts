@@ -20,11 +20,10 @@ test.describe('mailfence tests (eng loc)', async () => {
   test.beforeEach('login', async ({ }) => {
     tempFilePath = await createFilePath(seedFilePath);
     testFileName = await createFileCopy(sourceFilePath, tempFilePath);
-    await MainPage.navigate();
-    await MainPage.toLogin(process.env.LOGIN!, process.env.PASSWORD!);
   });
 
   test('create new email', async ({ }) => {
+    await MailPage.navigate();
     await MailPage.goToNewEmailPage();
     await NewMailPage.sendNewEmail(
       {
@@ -44,7 +43,7 @@ test.describe('mailfence tests (eng loc)', async () => {
     await MailPage.goToDocPage();
     await DocumentsPage.dragDocumentInTrashDirectory(testFileName);
     await DocumentsPage.treeMenu().goToTrashDirectory();
-    await DocumentsPage.waitForDocumentInTrashDirectory(testFileName);
+    await DocumentsPage.waitForDocumentInDirectory(testFileName);
     await expect(DocumentsPage.documentsList().documentButton(testFileName).locator,
       `error: file ${testFileName} not found in trash directory`).toBeVisible();
   });
