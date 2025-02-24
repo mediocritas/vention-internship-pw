@@ -13,14 +13,14 @@ export default class DocumentsPage extends BasePage {
     static readonly header = () => new HeaderMenuComponent();
     static readonly documentsList = () => new DocumentsListComponent();
 
-    @step('Dragging document element to trash directory')
+    @step('Drag document to trash directory')
     static async dragDocumentInTrashDirectory(docName: string) {
         const doc = this.documentsList().documentButton(docName);
         await doc.scrollIntoView();
         await doc.customDragTo(this.treeMenu().trashDirButton());
     }
 
-    @step('Waiting until document is shown in directory')
+    @step('Wait until document is shown in directory')
     static async waitForDocumentInDirectory(docName: string) {
         await this.funcPanel().refreshButton().click();
         await getPage().waitForLoadState('load');

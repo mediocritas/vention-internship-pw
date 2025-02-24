@@ -29,7 +29,7 @@ export default class NewMailPage extends BasePage {
     static readonly namedAttachementButton = (fileName: string) =>
         new ButtonElement(getPage().locator(`//*[contains(text(), "${fileName}")]`), `${fileName} fileButton`)
 
-    @step('Creating and sending new email')
+    @step('Creat and sending new email')
     static async sendNewEmail(options: {
         addressee: string,
         emailSubject: string,

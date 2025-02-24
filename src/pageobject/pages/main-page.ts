@@ -15,7 +15,7 @@ export default class MainPage extends BasePage {
     static readonly enterButton = () =>
         new ButtonElement(getPage().locator('//input[@value="Enter"]'), 'GetLoginButton')
 
-    @step('Going to the MainPage')
+    @step('Go to the MainPage')
     static async navigate() {
         await super.goto(this.url);
     }

@@ -29,22 +29,22 @@ export default class MailPage extends BasePage {
             `AttachmentActionsButton`
         );
 
-    @step('Going to the MailPage')
+    @step('Go to the MailPage')
     static async navigate() {
         await super.goto(this.url);
     }
 
-    @step('Going to NewEmailPage')
+    @step('Go to NewEmailPage')
     static async goToNewEmailPage() {
         await this.funcPanel().newMessageButton().click();
     }
 
-    @step('Going to DocPage')
+    @step('Go to DocPage')
     static async goToDocPage() {
         await this.header().documentsButton().click();
     }
 
-    @step('Waiting until new email appear')
+    @step('Wait until new email appear')
     static async waitUntilNewEmailAppears(emailSubject: string) {
         for (let i = 0; i < parseInt(process.env.MAX_RETRIES!, 10); i++) {
             try {
@@ -57,7 +57,7 @@ export default class MailPage extends BasePage {
         }
     }
 
-    @step('Opening new email')
+    @step('Open new email')
     static async openEmail(emailSubject: string) {
         await this.emailsList().emailButton(emailSubject).click();
     }

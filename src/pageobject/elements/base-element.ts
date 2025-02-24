@@ -12,7 +12,7 @@ export default class BaseElement {
         this.name = name || (this.constructor.name + locator);
     }
 
-    @step('Clicking on the element')
+    @step('Click on the element')
     async click(options?: { force?: boolean, timeout?: number }) {
         const finalOptions = {
             ...options,
