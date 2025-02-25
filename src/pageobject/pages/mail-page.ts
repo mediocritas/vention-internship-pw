@@ -23,7 +23,7 @@ export default class MailPage extends BasePage {
             'MyDocumentsDirButton');
     static readonly attachmentButton = (attchName: string) =>
         new ButtonElement(getPage().locator(`//*[text()="${attchName}"]`),
-            `${attchName} attachmentButton`);
+            `${attchName} AttachmentButton`);
     static readonly attchActionsButton = (attchName: string) =>
         new ButtonElement(getPage().locator(`//*[text()="${attchName}"]/*[contains(@class, "icon-Arrow-down")]`),
             `AttachmentActionsButton`
@@ -49,7 +49,7 @@ export default class MailPage extends BasePage {
         for (let i = 0; i < parseInt(process.env.MAX_RETRIES!, 10); i++) {
             try {
                 await this.emailsList().emailButton(emailSubject)
-                    .waitForVisible({ timeout: 1000 });
+                    .waitForVisible({ timeout: 1500 });
                 return;
             } catch {
                 await this.funcPanel().refreshButton().click();
@@ -70,6 +70,22 @@ export default class MailPage extends BasePage {
         await this.myDocButton().click();
         await this.saveFileWindow().myDocOption().waitForAttached();
         await this.saveFileWindow().myDocOption().click();
-        await this.saveFileWindow().clickOnSaveButton(parseInt(process.env.MAX_RETRIES!, 10));
+        await this.clickOnSaveButton(parseInt(process.env.MAX_RETRIES!, 10), attchName);
+    }
+
+    @step('Click on Save button')
+    static async clickOnSaveButton(maxRetries: number, attchName: string) {
+        await this.saveFileWindow().saveButton().waitForVisible();
+        for (let i = 0; i < maxRetries; i++) {
+            if (await this.saveFileWindow().saveButton().isVisible({ timeout: 600 })) {
+                if (await this.saveFileWindow().myDocOption()
+                    .isHidden({ timeout: 800 })
+                    && await this.attachmentButton(attchName)
+                        .isVisible({ timeout: 800 })) {
+                    return;
+                }
+                await this.saveFileWindow().saveButton().click({ force: true, timeout: 10000 });
+            }
+        }
     }
 }

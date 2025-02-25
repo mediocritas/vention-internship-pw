@@ -14,8 +14,8 @@ export default class DocumentsPage extends BasePage {
     static readonly documentsList = () => new DocumentsListComponent();
 
     @step('Drag document to trash directory')
-    static async dragDocumentInTrashDirectory(docName: string) {
-        const doc = this.documentsList().documentButton(docName);
+    static async dragDocumentToTrashDirectory(docName: string) {
+        const doc = this.documentsList().boxedDocumentButton(docName);
         await doc.scrollIntoView();
         await doc.customDragTo(this.treeMenu().trashDirButton());
     }
@@ -24,7 +24,7 @@ export default class DocumentsPage extends BasePage {
     static async waitForDocumentInDirectory(docName: string) {
         await this.funcPanel().refreshButton().click();
         await getPage().waitForLoadState('load');
-        await this.documentsList().documentButton(docName).waitForVisible();
         await this.documentsList().documentButton(docName).scrollIntoView();
+        await this.documentsList().documentButton(docName).waitForVisible();
     }
 }

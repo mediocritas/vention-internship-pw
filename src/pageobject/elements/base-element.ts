@@ -67,7 +67,7 @@ export default class BaseElement {
             await getPage().mouse.move(
                 targetElementBox.x,
                 targetElementBox.y,
-                { steps: 20 }
+                { steps: 30 }
             );
             await target.waitForVisible();
             await getPage().mouse.up();
