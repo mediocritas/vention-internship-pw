@@ -24,6 +24,7 @@ export default class DocumentsPage extends BasePage {
     static async waitForDocumentInDirectory(docName: string) {
         await this.funcPanel().refreshButton().click();
         await getPage().waitForLoadState('load');
+        await this.documentsList().documentButton(docName).waitForVisible();
         await this.documentsList().documentButton(docName).scrollIntoView();
     }
 }
