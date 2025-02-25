@@ -2,7 +2,7 @@ import BasePage from './base-page';
 import ButtonElement from '../elements/button-element';
 import InputElement from '../elements/input-element';
 import { getPage } from '../../core/page-utils';
-import { step } from '../decorators/page-decorators';
+import { step } from "../decorators/playwright-decorators";
 
 export default class MainPage extends BasePage {
     static readonly url: string = process.env.BASE_URL!;

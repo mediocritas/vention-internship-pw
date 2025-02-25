@@ -6,7 +6,7 @@ import HeaderMenuComponent from "../components/header-menu-component";
 import ButtonElement from "../elements/button-element";
 import EmailsListComponent from "../components/emails-list-component";
 import { getPage } from "../../core/page-utils";
-import { step } from "../decorators/page-decorators";
+import { step } from "../decorators/playwright-decorators";
 
 export default class MailPage extends BasePage {
     static readonly url: string = process.env.BASE_URL! + 'flatx';
@@ -62,6 +62,7 @@ export default class MailPage extends BasePage {
         await this.emailsList().emailButton(emailSubject).click();
     }
 
+    @step('Save attachment file')
     static async saveAttachmentInMyDocDir(attchName: string) {
         await this.attachmentButton(attchName).hover();
         await this.attchActionsButton(attchName).click();

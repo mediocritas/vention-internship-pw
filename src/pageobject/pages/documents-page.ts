@@ -4,7 +4,7 @@ import DocTreeMenuComponent from "../components/doc-tree-menu-component";
 import HeaderMenuComponent from "../components/header-menu-component";
 import DocFuncPanelComponent from "../components/doc-func-panel-component";
 import DocumentsListComponent from "../components/documents-list-component";
-import { step } from "../decorators/page-decorators";
+import { step } from "../decorators/playwright-decorators";
 
 export default class DocumentsPage extends BasePage {
 

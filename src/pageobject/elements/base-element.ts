@@ -1,5 +1,5 @@
 import { Locator } from "@playwright/test";
-import { step } from "../decorators/element-decorators";
+import { step } from "../decorators/playwright-decorators";
 import { getPage } from "../../core/page-utils";
 
 export default class BaseElement {
@@ -58,7 +58,7 @@ export default class BaseElement {
 
     @step('Drag element to the target element')
     async customDragTo(target: BaseElement) {
-
+        await target.waitForVisible();
         const targetElementBox = (await target.box())!;
 
         try {

@@ -1,6 +1,6 @@
 import { FrameLocator, Locator } from "@playwright/test";
 import BaseElement from "./base-element";
-import { step } from "../decorators/element-decorators";
+import { step } from "../decorators/playwright-decorators";
 
 export default class IFrameElement extends BaseElement {
 
