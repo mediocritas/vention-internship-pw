@@ -1,4 +1,4 @@
-import { test as setup } from './fixtures/page-fixture';
+import { test as setup } from '../src/core/fixtures/page-fixture';
 import { expect } from '@playwright/test';
 import MainPage from '../src/pageobject/pages/main-page';
 import { getPage } from '../src/core/page-utils';

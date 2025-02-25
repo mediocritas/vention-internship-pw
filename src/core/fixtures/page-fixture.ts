@@ -1,5 +1,5 @@
 import { test as base } from "@playwright/test"
-import { closePage, setPage } from "../../src/core/page-utils"
+import { closePage, setPage } from "../page-utils"
 
 
 export type TestOptions = {
