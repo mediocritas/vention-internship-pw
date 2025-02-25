@@ -10,75 +10,68 @@ import NewMailPage from '../src/pageobject/pages/new-mail-page';
 const emailSubject = process.env.SUBJECT! + faker.string.alpha(5);
 const testFilePath = path.resolve('.artefacts/');
 
-let tempFilePath: string;
-let tempFileName: string;
+let testFile;
 
-test.describe.configure({ mode: 'parallel' });
+test.beforeEach('login', async ({ }) => {
+  testFile = await createTextFile(testFilePath);
+});
 
-  test.beforeEach('login', async ({ }) => {
-    const result = await createTextFile(testFilePath);
-    tempFileName = result!.fileName;
-    tempFilePath = result!.filePath;
-  });
+test('create new email', async ({ }) => {
+  await MailPage.navigate();
+  await MailPage.goToNewEmailPage();
+  await NewMailPage.sendNewEmail(
+    {
+      addressee: process.env.LOGIN + process.env.DOMAIN!,
+      emailSubject: emailSubject,
+      textMessage: faker.string.alpha(10),
+      filePath: testFile!.filePath,
+      fileName: testFile!.fileName
+    }
+  )
 
-  test('create new email', async ({ }) => {
-    await MailPage.navigate();
-    await MailPage.goToNewEmailPage();
-    await NewMailPage.sendNewEmail(
-      {
-        addressee: process.env.LOGIN + process.env.DOMAIN!,
-        emailSubject: emailSubject,
-        textMessage: faker.string.alpha(10),
-        filePath: tempFilePath,
-        fileName: tempFileName
-      }
-    )
+  await MailPage.waitUntilNewEmailAppears(emailSubject);
+  await MailPage.openEmail(emailSubject);
 
-    await MailPage.waitUntilNewEmailAppears(emailSubject);
-    await MailPage.openEmail(emailSubject);
+  await MailPage.saveAttachmentInMyDocDir(testFile!.fileName);
 
-    await MailPage.saveAttachmentInMyDocDir(tempFileName);
+  await MailPage.goToDocPage();
+  await DocumentsPage.dragDocumentToTrashDirectory(testFile!.fileName);
+  await DocumentsPage.treeMenu().goToTrashDirectory();
+  await DocumentsPage.waitForDocumentInDirectory(testFile!.fileName);
+  await expect(DocumentsPage.documentsList().documentButton(testFile!.fileName).locator,
+    `error: file ${testFile!.fileName} not found in trash directory`).toBeVisible();
+});
 
-    await MailPage.goToDocPage();
-    await DocumentsPage.dragDocumentInTrashDirectory(tempFileName);
-    await DocumentsPage.treeMenu().goToTrashDirectory();
-    await DocumentsPage.waitForDocumentInDirectory(tempFileName);
-    await expect(DocumentsPage.documentsList().documentButton(tempFileName).locator,
-      `error: file ${tempFileName} not found in trash directory`).toBeVisible();
-  });
+test('create new email copy', async ({ }) => {
+  await MailPage.navigate();
+  await MailPage.goToNewEmailPage();
+  await NewMailPage.sendNewEmail(
+    {
+      addressee: process.env.LOGIN + process.env.DOMAIN!,
+      emailSubject: emailSubject,
+      textMessage: faker.string.alpha(10),
+      filePath: testFile!.filePath,
+      fileName: testFile!.fileName
+    }
+  )
 
-  test('create new email copy', async ({ }) => {
-    await MailPage.navigate();
-    await MailPage.goToNewEmailPage();
-    await NewMailPage.sendNewEmail(
-      {
-        addressee: process.env.LOGIN + process.env.DOMAIN!,
-        emailSubject: emailSubject,
-        textMessage: faker.string.alpha(10),
-        filePath: tempFilePath,
-        fileName: tempFileName
-      }
-    )
+  await MailPage.waitUntilNewEmailAppears(emailSubject);
+  await MailPage.openEmail(emailSubject);
 
-    await MailPage.waitUntilNewEmailAppears(emailSubject);
-    await MailPage.openEmail(emailSubject);
+  await MailPage.saveAttachmentInMyDocDir(testFile!.fileName);
 
-    await MailPage.saveAttachmentInMyDocDir(tempFileName);
-
-    await MailPage.goToDocPage();
-    await DocumentsPage.dragDocumentInTrashDirectory(tempFileName);
-    await DocumentsPage.treeMenu().goToTrashDirectory();
-    await DocumentsPage.waitForDocumentInDirectory(tempFileName);
-    await expect(DocumentsPage.documentsList().documentButton(tempFileName).locator,
-      `error: file ${tempFileName} not found in trash directory`).toBeVisible();
-  });
+  await MailPage.goToDocPage();
+  await DocumentsPage.dragDocumentToTrashDirectory(testFile!.fileName);
+  await DocumentsPage.treeMenu().goToTrashDirectory();
+  await DocumentsPage.waitForDocumentInDirectory(testFile!.fileName);
+  const loc = DocumentsPage.documentsList().documentButton(testFile!.fileName).locator;
+  await expect(DocumentsPage.documentsList().documentButton(testFile!.fileName).locator,
+    `error: file ${testFile!.fileName} not found in trash directory`).toBeVisible();
+});
 
 
-test.afterEach(async ({ context }) => {
-  try {
-    await context.tracing.stop({ path: 'test-results/traces/trace.zip' });
-  } catch { }
+test.afterEach(async ({ }) => {
   if (test.info().errors.length === 0) {
-    await deleteFile(tempFilePath);
+    await deleteFile(testFile!.filePath);
   }
 });
