@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "npx playwright test",
-    "trace": "npx playwright show-trace test-results/traces/trace.zip"
+    "trace": "npx playwright show-trace test-results/**/trace.zip",
+    "report": "npx playwright show-report"
   },
   "type": "module",
   "author": "",
