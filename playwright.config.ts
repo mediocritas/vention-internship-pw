@@ -11,9 +11,12 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 2,
   workers: process.env.CI ? 1 : 4,
   reporter: 'html',
-
+  timeout: 60 * 2_000,
+  expect: { timeout: 10_000 }, 
+  
   use: {
-    actionTimeout: 40000,
+    actionTimeout: 10_000,
+    navigationTimeout: 15_000,
     trace: 'on',
     screenshot: 'on',
     video: {
