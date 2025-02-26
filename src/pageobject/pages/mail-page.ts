@@ -79,9 +79,9 @@ export default class MailPage extends BasePage {
         for (let i = 0; i < maxRetries; i++) {
             if (await this.saveFileWindow().saveButton().isVisible({ timeout: 600 })) {
                 if (await this.saveFileWindow().myDocOption()
-                    .isHidden({ timeout: 800 })
+                    .isHidden({ timeout: 400 })
                     && await this.attachmentButton(attchName)
-                        .isVisible({ timeout: 800 })) {
+                        .isVisible({ timeout: 400 })) {
                     return;
                 }
                 await this.saveFileWindow().saveButton().click({ force: true, timeout: 10000 });
