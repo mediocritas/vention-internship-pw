@@ -8,7 +8,7 @@ export default class ButtonElement extends BaseElement {
     }
 
     @step('Check if the element is enabled')
-    async isEnabled() {
-        return this.locator.isEnabled();
+    async isEnabled(options?: { timeout?: number }) {
+        return this.locator.isEnabled(options);
     }
 }
