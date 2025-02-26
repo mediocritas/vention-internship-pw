@@ -1,4 +1,8 @@
 node_modules/
+create-new-email.spec.ts
+.artefacts
+.vscode
+*.js
 
 # Playwright
 /test-results/
@@ -6,3 +10,4 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /tests-examples/
+*.auth
