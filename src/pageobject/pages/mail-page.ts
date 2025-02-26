@@ -70,22 +70,6 @@ export default class MailPage extends BasePage {
         await this.myDocButton().click();
         await this.saveFileWindow().myDocOption().waitForAttached();
         await this.saveFileWindow().myDocOption().click();
-        await this.clickOnSaveButton(parseInt(process.env.MAX_RETRIES!, 10), attchName);
-    }
-
-    @step('Click on Save button')
-    static async clickOnSaveButton(maxRetries: number, attchName: string) {
-        await this.saveFileWindow().saveButton().waitForVisible();
-        for (let i = 0; i < maxRetries; i++) {
-            if (await this.saveFileWindow().saveButton().isVisible({ timeout: 600 })) {
-                if (await this.saveFileWindow().myDocOption()
-                    .isHidden({ timeout: 400 })
-                    && await this.attachmentButton(attchName)
-                        .isVisible({ timeout: 400 })) {
-                    return;
-                }
-                await this.saveFileWindow().saveButton().click({ force: true, timeout: 10000 });
-            }
-        }
+        await this.saveFileWindow().clickOnSaveButton();
     }
 }
