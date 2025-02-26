@@ -8,7 +8,7 @@ export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 2,
+  retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : 4,
   reporter: 'html',
   timeout: 60 * 2_000,
@@ -33,6 +33,7 @@ export default defineConfig({
       use: {
         browserName: 'chromium',
         storageState: '.auth/user.json',
+        launchOptions: {args: ['--disable-modal-animations', '--disable-blink-features=CSSAnimation,CSSTransitions']},
       },
       dependencies: ['setup'],
     },
