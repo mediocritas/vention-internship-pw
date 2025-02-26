@@ -12,9 +12,8 @@ export default defineConfig({
   workers: process.env.CI ? 1 : 4,
   reporter: 'html',
 
-  timeout: 40000,
-
   use: {
+    actionTimeout: 40000,
     trace: 'on',
     screenshot: 'on',
     video: {
