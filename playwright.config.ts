@@ -1,5 +1,6 @@
 import { defineConfig } from '@playwright/test';
 import dotenv from 'dotenv';
+import { defineBddConfig } from 'playwright-bdd';
 
 dotenv.config();
 
@@ -35,6 +36,20 @@ export default defineConfig({
         storageState: '.auth/user.json',
         launchOptions: {args: ['--disable-modal-animations', '--disable-blink-features=CSSAnimation,CSSTransitions']},
       },
+      dependencies: ['setup'],
+    },
+    {
+      name: 'bdd',
+      use: {
+        browserName: 'chromium',
+        storageState: '.auth/user.json',
+        launchOptions: {args: ['--disable-modal-animations', '--disable-blink-features=CSSAnimation,CSSTransitions']},
+      },
+      testDir: defineBddConfig({
+        features: './tests/features/*.feature',
+        steps: './tests/step-definitions/*.ts',
+        importTestFrom: './src/core/fixtures/bdd-fixture.ts'
+      }),
       dependencies: ['setup'],
     },
 
