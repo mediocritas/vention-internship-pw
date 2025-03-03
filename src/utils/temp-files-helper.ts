@@ -22,3 +22,15 @@ export const deleteFile = async (path: string) => {
         console.warn(`Error deleting file ${path}`);
     }
 }
+
+export const createTextFileWithName = async (path: string, fileName: string) => {
+    try {
+        await mkdir(path, { recursive: true });
+        const filePath = join(path, fileName);
+        await writeFile(filePath, 'testFile');
+        return { fileName, filePath };
+    } catch (error) {
+        console.error('Error during text file creation');
+        throw error;
+    }
+}
