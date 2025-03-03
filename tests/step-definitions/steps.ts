@@ -53,8 +53,7 @@ Then('I go to Trash directory', async ({ }) => {
   await DocumentsPage.treeMenu().goToTrashDirectory();
 });
 
-Then('I expect to see attachment file', async ({ testFile }) => {
-  await DocumentsPage.waitForDocumentInDirectory(testFile.fileName);
+Then('I expect to see attachment file', async ({ }) => {
   await expect(DocumentsPage.documentsList().documentButton(testFile!.fileName).locator,
     `error: file ${testFile!.fileName} not found in trash directory`).toBeVisible();
 })

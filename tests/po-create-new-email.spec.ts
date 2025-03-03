@@ -37,7 +37,6 @@ test('create new email', async ({ }) => {
   await MailPage.goToDocPage();
   await DocumentsPage.dragDocumentToTrashDirectory(testFile!.fileName);
   await DocumentsPage.treeMenu().goToTrashDirectory();
-  await DocumentsPage.waitForDocumentInDirectory(testFile!.fileName);
   await expect(DocumentsPage.documentsList().documentButton(testFile!.fileName).locator,
     `error: file ${testFile!.fileName} not found in trash directory`).toBeVisible();
 });
