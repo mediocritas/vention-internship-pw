@@ -6,7 +6,7 @@ import path from 'path';
 import { createTextFile } from '../../utils/temp-files-helper';
 import { PlaywrightTestArgs } from 'playwright/test';
 
-export type Ctx = {
+export type Context = {
   emailSubject: string;
   testFilePath: string;
   testFile: {fileName: string, filePath: string};
