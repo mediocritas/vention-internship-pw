@@ -3,16 +3,14 @@ import { closePage, setPage } from '../page-utils';
 import { TestOptions } from './page-fixture';
 import { faker } from '@faker-js/faker';
 import path from 'path';
-import { createTextFile } from '../../utils/temp-files-helper';
 import { PlaywrightTestArgs } from 'playwright/test';
 
 export type Context = {
   emailSubject: string;
   testFilePath: string;
-  testFile: {fileName: string, filePath: string};
 };
 
-export const test = base.extend<TestOptions & PlaywrightTestArgs, Ctx>({
+export const test = base.extend<TestOptions & PlaywrightTestArgs, Context>({
   testHooks: [async ({ page }, use) => {
     setPage(page);
     await use('');
@@ -29,13 +27,7 @@ export const test = base.extend<TestOptions & PlaywrightTestArgs, Ctx>({
     const testFilePath = path.resolve('../../.artefacts/');
     await use(testFilePath);
   }, { scope: 'worker' }],
-  
-  testFile: [async ({ testFilePath }, use) => {
-    const testFile = await createTextFile(testFilePath);
-    await use(testFile);
-  }, { scope: 'worker' }]
 
 });
 
 export const { Given, When, Then } = createBdd(test);
-

@@ -3,7 +3,10 @@ import MailPage from '../../src/pageobject/pages/mail-page';
 import NewMailPage from '../../src/pageobject/pages/new-mail-page';
 import { faker } from '@faker-js/faker';
 import DocumentsPage from '../../src/pageobject/pages/documents-page';
-import {Given, When, Then} from '../../src/core/fixtures/bdd-fixture';
+import { Given, When, Then } from '../../src/core/fixtures/bdd-fixture';
+import { createTextFileWithName } from '../../src/utils/temp-files-helper';
+
+let testFile: {fileName: string, filePath: string};
 
 Given('I authenticate as valid user', async ({ }) => {
 });
@@ -16,15 +19,18 @@ When('Click on the New button', async ({ }) => {
   await MailPage.goToNewEmailPage();
 });
 
-When('Send new email to myself', async ({ emailSubject, testFile},) => {
+When('Send new email to myself with attachment', async ({ emailSubject, testFilePath }, fileName: string) => {
+
+  if (!fileName) throw new Error('No file name provided from feature');
+  testFile = await createTextFileWithName(testFilePath, fileName);
 
   await NewMailPage.sendNewEmail(
     {
       addressee: process.env.LOGIN + process.env.DOMAIN!,
       emailSubject: emailSubject,
       textMessage: faker.string.alpha(10),
-      filePath: testFile!.filePath,
-      fileName: testFile!.fileName
+      filePath: testFile.filePath,
+      fileName: testFile.fileName
     }
   )
 });
@@ -37,7 +43,7 @@ When('I open new email', async ({ emailSubject }) => {
   await MailPage.openEmail(emailSubject);
 });
 
-When('Save emails attachment file in My Documents', async ({ testFile }) => {
+When('Save emails attachment file in My Documents', async ({ }) => {
   await MailPage.saveAttachmentInMyDocDir(testFile.fileName);
 });
 
@@ -45,7 +51,7 @@ When('I go to the My Documents page', async ({ }) => {
   await MailPage.goToDocPage();
 });
 
-When('Drag attachment file to Trash directory', async ({ testFile }) => {
+When('Drag attachment file to Trash directory', async ({ }) => {
   await DocumentsPage.dragDocumentToTrashDirectory(testFile.fileName);
 });
 
