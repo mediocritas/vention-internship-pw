@@ -3,14 +3,13 @@ import { closePage, setPage } from '../page-utils';
 import { TestOptions } from './page-fixture';
 import { faker } from '@faker-js/faker';
 import path from 'path';
-import { PlaywrightTestArgs } from 'playwright/test';
 
 export type Context = {
   emailSubject: string;
   testFilePath: string;
 };
 
-export const test = base.extend<TestOptions & PlaywrightTestArgs, Context>({
+export const test = base.extend<TestOptions, Context>({
   testHooks: [async ({ page }, use) => {
     setPage(page);
     await use('');
@@ -18,7 +17,7 @@ export const test = base.extend<TestOptions & PlaywrightTestArgs, Context>({
   }, { auto: true }],
 
   emailSubject: [async ({ }, use) => {
-    const baseSubject = process.env.SUBJECT || 'Test Email';
+    const baseSubject = process.env.SUBJECT!;
     const emailSubject = baseSubject + faker.string.alpha(5);
     await use(emailSubject);
   }, { scope: 'worker' }],
@@ -27,7 +26,6 @@ export const test = base.extend<TestOptions & PlaywrightTestArgs, Context>({
     const testFilePath = path.resolve('../../.artefacts/');
     await use(testFilePath);
   }, { scope: 'worker' }],
-
 });
 
 export const { Given, When, Then } = createBdd(test);
