@@ -1,6 +1,6 @@
 Feature: email' attachment management
 
-    Scenario Outline: create new email
+    Scenario: create new email
         Given I authenticate as valid user
         When I open Mail page
         And Click on the New button
