@@ -4,9 +4,9 @@ Feature: email' attachment management
         Given I authenticate as valid user
         When I open Mail page
         And Click on the New button
-        And Send new email to myself with attachment
+        And Send new email to myself with attachment prefix
             """
-            TC-3452.txt
+            TC-3452
             """
         Then I wait until new email appears in emails list
         When I open new email

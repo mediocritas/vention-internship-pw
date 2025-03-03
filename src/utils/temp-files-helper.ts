@@ -25,10 +25,11 @@ export const deleteFile = async (path: string) => {
 
 export const createTextFileWithName = async (path: string, fileName: string) => {
     try {
+        const fullFileName = fileName + `_${faker.string.alpha(5)}.txt`;
         await mkdir(path, { recursive: true });
-        const filePath = join(path, fileName);
+        const filePath = join(path, fullFileName);
         await writeFile(filePath, 'testFile');
-        return { fileName, filePath };
+        return { fullFileName, filePath };
     } catch (error) {
         console.error('Error during text file creation');
         throw error;
