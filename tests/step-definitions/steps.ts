@@ -6,7 +6,7 @@ import DocumentsPage from '../../src/pageobject/pages/documents-page';
 import { Given, When, Then } from '../../src/core/fixtures/bdd-fixture';
 import { createTextFileWithName } from '../../src/utils/temp-files-helper';
 
-let testFile: {fileName: string, filePath: string};
+let testFile: { fileName: string, filePath: string };
 
 Given('I authenticate as valid user', async ({ }) => {
 });

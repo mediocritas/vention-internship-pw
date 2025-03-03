@@ -17,13 +17,13 @@ export const test = base.extend<TestOptions & PlaywrightTestArgs, Context>({
     await closePage();
   }, { auto: true }],
 
-  emailSubject: [async ({}, use) => {
+  emailSubject: [async ({ }, use) => {
     const baseSubject = process.env.SUBJECT || 'Test Email';
     const emailSubject = baseSubject + faker.string.alpha(5);
     await use(emailSubject);
   }, { scope: 'worker' }],
-  
-  testFilePath: [async ({}, use) => {
+
+  testFilePath: [async ({ }, use) => {
     const testFilePath = path.resolve('../../.artefacts/');
     await use(testFilePath);
   }, { scope: 'worker' }],
