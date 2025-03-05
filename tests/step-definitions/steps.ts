@@ -11,10 +11,6 @@ let testFile: { fullFileName: string, filePath: string };
 Given('I authenticate as valid user', async ({ }) => {
 });
 
-When('I open Mail page', async ({ }) => {
-  await MailPage.navigate();
-});
-
 When('Click on the New button', async ({ }) => {
   await MailPage.goToNewEmailPage();
 });
@@ -49,19 +45,28 @@ When('Save emails attachment file in My Documents', async ({ }) => {
   await MailPage.saveAttachmentInMyDocDir(testFile.fullFileName);
 });
 
-When('I go to the My Documents page', async ({ }) => {
-  await MailPage.goToDocPage();
-});
-
 When('Drag attachment file to Trash directory', async ({ }) => {
   await DocumentsPage.dragDocumentToTrashDirectory(testFile.fullFileName);
-});
-
-Then('I go to Trash directory', async ({ }) => {
-  await DocumentsPage.treeMenu().goToTrashDirectory();
 });
 
 Then('I expect to see attachment file', async ({ }) => {
   await expect(DocumentsPage.documentsList().documentButton(testFile!.fullFileName).locator,
     `error: file ${testFile!.fullFileName} not found in trash directory`).toBeVisible();
 })
+
+When(/^I go to (My Documents page|Trash directory page|Mail page)$/, async ({ }, pageName: string) => {
+
+  switch (pageName) {
+    case 'My Documents page':
+      await MailPage.goToDocPage();
+      break;
+    case 'Trash directory page':
+      await DocumentsPage.treeMenu().goToTrashDirectory();
+      break;
+    case 'Mail page':
+      await MailPage.navigate();
+      break;
+    default:
+      throw new Error(`Unknown page: ${pageName}`);
+  }
+});
