@@ -19,7 +19,7 @@ When('Click on the New button', async ({ }) => {
   await MailPage.goToNewEmailPage();
 });
 
-When('Send new email to myself with attachment prefix',
+When(/^Send new email to myself with attachment prefix (TC-3452|TC-432)$/,
   async ({ emailSubject, testFilePath }, fileName: string) => {
 
     if (!fileName) throw new Error('No file name provided from feature');
