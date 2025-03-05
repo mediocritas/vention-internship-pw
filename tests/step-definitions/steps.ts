@@ -5,6 +5,7 @@ import { faker } from '@faker-js/faker';
 import DocumentsPage from '../../src/pageobject/pages/documents-page';
 import { Given, When, Then } from '../../src/core/fixtures/bdd-fixture';
 import { createTextFileWithName } from '../../src/utils/temp-files-helper';
+import { PageAction } from './param-types';
 
 let testFile: { fullFileName: string, filePath: string };
 
@@ -54,21 +55,6 @@ Then('I expect to see attachment file', async ({ }) => {
     `error: file ${testFile!.fullFileName} not found in trash directory`).toBeVisible();
 })
 
-When(/^I go to (My Documents page|Trash directory page|Mail page)$/, async ({ }, pageName: PageName) => {
-
-  switch (pageName) {
-    case 'My Documents page':
-      await MailPage.goToDocPage();
-      break;
-    case 'Trash directory page':
-      await DocumentsPage.treeMenu().goToTrashDirectory();
-      break;
-    case 'Mail page':
-      await MailPage.navigate();
-      break;
-    default:
-      throw new Error(`Unknown page: ${pageName}`);
-  }
+When('I go to {page}', async ({ }, navigate: PageAction) => {
+  await navigate();
 });
-
-type PageName = 'My Documents page' | 'Trash directory page' | 'Mail page';
