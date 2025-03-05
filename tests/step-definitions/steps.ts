@@ -54,7 +54,7 @@ Then('I expect to see attachment file', async ({ }) => {
     `error: file ${testFile!.fullFileName} not found in trash directory`).toBeVisible();
 })
 
-When(/^I go to (My Documents page|Trash directory page|Mail page)$/, async ({ }, pageName: string) => {
+When(/^I go to (My Documents page|Trash directory page|Mail page)$/, async ({ }, pageName: PageName) => {
 
   switch (pageName) {
     case 'My Documents page':
@@ -70,3 +70,5 @@ When(/^I go to (My Documents page|Trash directory page|Mail page)$/, async ({ },
       throw new Error(`Unknown page: ${pageName}`);
   }
 });
+
+type PageName = 'My Documents page' | 'Trash directory page' | 'Mail page';
