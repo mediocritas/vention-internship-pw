@@ -12,3 +12,7 @@ create-new-email.spec.ts
 /tests-examples/
 *.auth
 .features-gen
+
+#Allure
+allure-results
+allure-report

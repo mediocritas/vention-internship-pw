@@ -11,7 +11,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : 4,
-  reporter: 'html',
+  reporter: [['html'], ["allure-playwright"]],
   timeout: 60 * 2_000,
   expect: { timeout: 10_000 }, 
   
