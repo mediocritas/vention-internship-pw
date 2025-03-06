@@ -31,5 +31,12 @@ export const test = base.extend<TestOptions, { testFile: TestFile }>({
         }
         await closePage();
     }, { auto: true }],
-
 })
+
+test.beforeEach('login', async ({ }, testInfo) => {
+    console.log(`Starting test: ${testInfo.title}`);
+});
+
+test.afterEach(async ({ }, testInfo) => {
+    console.log(`Test ended with status ${testInfo.status}`);
+});
