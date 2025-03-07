@@ -5,7 +5,6 @@ import { getPage } from '../../src/core/page-utils';
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 import MailPage from '../../src/pageobject/pages/mail-page';
-import * as allure from 'allure-js-commons';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -13,10 +12,8 @@ const authFile = path.join(__dirname, '../../.auth/user.json');
 
 
 setup('authenticate', async ({ }) => {
-    await allure.step('Authentication step', async () => {
-        await MainPage.navigate();
-        await MainPage.toLogin(process.env.LOGIN!, process.env.PASSWORD!);
-        await expect(MailPage.funcPanel().newMessageButton().locator).toBeVisible();
-        await getPage().context().storageState({ path: authFile });
-    });
+    await MainPage.navigate();
+    await MainPage.toLogin(process.env.LOGIN!, process.env.PASSWORD!);
+    await expect(MailPage.funcPanel().newMessageButton().locator).toBeVisible();
+    await getPage().context().storageState({ path: authFile });
 });
