@@ -11,7 +11,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : 4,
-  reporter: [['html'], ["allure-playwright"]],
+  reporter: [['html'], ['allure-playwright'], ['./src/core/custom-pw-reporter.ts']],
   timeout: 60 * 2_000,
   expect: { timeout: 10_000 }, 
   
@@ -38,7 +38,7 @@ export default defineConfig({
       },
       dependencies: ['setup'],
     },
-    {
+    /* {
       name: 'bdd',
       use: {
         browserName: 'chromium',
@@ -69,6 +69,6 @@ export default defineConfig({
         storageState: '.auth/user.json',
       },
       dependencies: ['setup'],
-    },
+    }, */
   ]
 });

@@ -8,10 +8,10 @@
     "trace": "npx playwright show-trace test-results/**/trace.zip",
     "report": "npx playwright show-report",
     "bdd": "npx bddgen && npx playwright test --project=bdd --headed",
-
     "test-allure": "npx playwright test --project=chromium --reporter=allure-playwright",
-    "allure-report": "allure generate ./allure-results -o ./allure-report",
-    "allure-open": "allure open ./allure-report"
+    "allure-report": "allure generate ./allure-results -o ./allure-report --clean",
+    "allure-open": "allure open ./allure-report",
+    "test-custom-reporter": "npx playwright test --project=chromium --reporter='./src/core/custom-pw-reporter.ts'"
   },
   "type": "module",
   "author": "",
