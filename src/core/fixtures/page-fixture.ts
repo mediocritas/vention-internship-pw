@@ -1,6 +1,5 @@
 import { test as base } from "@playwright/test"
 import { closePage, setPage } from "../page-utils"
-import { setupEventListeners } from '../event-listener';
 import path from "path";
 import { createTextFile, deleteFile } from "../../utils/temp-files-helper";
 
@@ -24,7 +23,6 @@ export const test = base.extend<TestOptions, { testFile: TestFile }>({
 
     testHooks: [async ({ page, testFile }, use) => {
         setPage(page);
-        setupEventListeners(testFile);
         await use('');
         if (test.info().errors.length === 0) {
             await deleteFile(testFile!.filePath);
