@@ -26,6 +26,8 @@ export default class NewMailPage extends BasePage {
         new ButtonElement(getPage().locator('//*[text()="Attachment"]'), 'AttachmentButton');
     static readonly fileInput = () =>
         new InputFileElement(getPage().locator('input[type="file"]'), 'FileInput');
+    static readonly fileInputButton = () =>
+        new ButtonElement(getPage().getByRole('link', { name: 'From your computer' }), 'FileInputButton');
     static readonly namedAttachementButton = (fileName: string) =>
         new ButtonElement(getPage().locator(`//*[contains(text(), "${fileName}")]`), `${fileName} fileButton`)
 

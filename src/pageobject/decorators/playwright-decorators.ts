@@ -3,12 +3,16 @@ import test from "@playwright/test";
 export function step(logMessage?: string) {
   return function (target: Function, context: ClassMethodDecoratorContext) {
     return async function replacementMethod(this: any, ...args: any) {
-      const className = this.constructor.name;
-      const parentClassName = Object.getPrototypeOf(this.constructor).name;
+      const classOrInstance = this;
+      const className = classOrInstance.constructor.name || this.name;
+      const isStatic = typeof classOrInstance === 'function';
+      const parentClassName = isStatic
+        ? Object.getPrototypeOf(classOrInstance).name
+        : Object.getPrototypeOf(classOrInstance.constructor).name;
 
       let name: string;
       let boxValue: boolean;
-      if (parentClassName === 'BasePage' || 'BaseComponent') {
+      if (parentClassName === 'BasePage' || parentClassName === 'BaseComponent') {
         name = `${logMessage}`;
         boxValue = false;
       } else if (parentClassName === 'BaseElement') {
