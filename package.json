@@ -6,7 +6,8 @@
     "test": "npx playwright test --project",
     "test-chromium": "npx playwright test --project=chromium",
     "trace": "npx playwright show-trace test-results/**/trace.zip",
-    "report": "npx playwright show-report"
+    "report": "npx playwright show-report",
+    "bdd": "npx bddgen && npx playwright test --project=bdd --headed"
   },
   "type": "module",
   "author": "",
@@ -16,6 +17,8 @@
     "@faker-js/faker": "^9.5.0",
     "@playwright/test": "^1.50.1",
     "@types/node": "^22.10.1",
+    "playwright": "^1.50.1",
+    "playwright-bdd": "^8.2.0",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3"
   },

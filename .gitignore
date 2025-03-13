@@ -11,3 +11,4 @@ create-new-email.spec.ts
 /playwright/.cache/
 /tests-examples/
 *.auth
+.features-gen
