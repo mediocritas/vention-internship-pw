@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "npx playwright test",
-    "trace": "npx playwright show-trace test-results/traces/trace.zip"
+    "test": "npx playwright test --project",
+    "test-chromium": "npx playwright test --project=chromium",
+    "trace": "npx playwright show-trace test-results/**/trace.zip",
+    "report": "npx playwright show-report"
   },
   "type": "module",
   "author": "",
